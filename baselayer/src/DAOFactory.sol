@@ -1,19 +1,17 @@
+
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import "./DAO.sol";
+
 contract DAOFactory {
-    uint256 public number;
+    event DAOCreated(address indexed daoAddress);
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+    function createDAO() public returns (address) {
+        DAO newDAO = new DAO();
+        emit DAOCreated(address(newDAO));
+
+        return address(newDAO);
     }
-
-    function increment() public {
-        number++;
-    }
-
-    function incrementBy(uint n) public {
-        number = number + n;
-    }
-
 }
+
