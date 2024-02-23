@@ -18,6 +18,8 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
           version: latest
+          working-directory: dapp
 
     - name: Test
+      working-directory: dapp
       run: make test
