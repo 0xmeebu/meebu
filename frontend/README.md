@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# Cartesi frontend web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+Cartesi Rollups version: 1.0.x
+```
+
+## Features
+
+With this project you can test some interactions with the Cartesi Rollups project:
+
+1. Metamask integration
+2. Send Inspect state Requests and Listing Reports response
+3. Sending Dapp Address with the DApp Relay
+4. Sending inputs
+5. Depositing Ether
+6. Depositing ERC20
+7. Depositing ERC721
+8. Depositing ERC1155 Single
+9. Depositing ERC1155 Batch
+10. Listing Notices
+11. Listing Reports
+12. Listing Vouchers
+13. Executing Vouchers
+
+## Configurtion
+
+Edit src/config.json to set the testnet parameters and deployment, inspect, graphql, rpc addresses.
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, run:
 
-### `npm start`
+```shell
+yarn
+yarn codegen
+```
+
+to build the app.
+
+```shell
+yarn start
+```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Voucher Notes
 
-### `npm test`
+To execute Vouchers, the voucher epoch must be finalized so the rollups framework generate the proofs.
+As a reminder, you can advance time in hardhat with the command:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```shell
+curl --data '{"id":1337,"jsonrpc":"2.0","method":"evm_increaseTime","params":[864010]}' http://localhost:8545
+```
 
-### `npm run build`
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/lynoferraz/frontend-web-cartesi)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
