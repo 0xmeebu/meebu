@@ -8,16 +8,17 @@ contract DAO {
         bytes payload;
     }
 
-    event PolicyExecuted(address indexed target, bool success);
+    event PolicyExecuted(address target, bool success);
 
     function executePolicy(bytes calldata _vouchers) public {
         Voucher[] memory vouchers = abi.decode(_vouchers, (Voucher[]));
 
         for (uint i = 0; i < vouchers.length; i++) {
-            (bool succ, ) = (vouchers[i].target).call(vouchers[i].payload);
+            Voucher memory v = vouchers[i];
+            (bool succ, ) = (v.target).call(v.payload);
 
             require(succ, "Call failed, yo");
-            emit PolicyExecuted(address indexed target, bool success);
+            emit PolicyExecuted(v.target, succ);
         }
     }
 }
