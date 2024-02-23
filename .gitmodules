@@ -4,3 +4,6 @@
 [submodule "baselayer/lib/openzeppelin-contracts"]
 	path = baselayer/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "baselayer/lib/rollups-contracts"]
+	path = baselayer/lib/rollups-contracts
+	url = https://github.com/cartesi/rollups-contracts
