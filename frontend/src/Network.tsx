@@ -13,7 +13,7 @@
 import { FC } from "react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import configFile from "./config.json";
-
+import { Button } from "@mantine/core"
 const config: any = configFile;
 
 export const Network: FC = () => {
@@ -22,13 +22,13 @@ export const Network: FC = () => {
 
     return (
         <div>
-            {!wallet && <button
+            {!wallet && <Button variant="filled" 
                 onClick={() =>
                     connect()
                 }
             >
                 {connecting ? "connecting" : "connect"}
-            </button>}
+            </Button>}
             {wallet && (
                 <div>
                     <label>Switch Chain</label>
