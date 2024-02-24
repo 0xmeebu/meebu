@@ -15,7 +15,6 @@ contract DAOFactory {
 
     IInputBox internal immutable inputBox;
     address meebu;
-    bool private setLock = false;
 
     event DAOCreated(address indexed daoAddr);
 
@@ -25,11 +24,11 @@ contract DAOFactory {
 
     // can only be set once
     function setMeebuAddress(address _meebu) public {
-        require(!setLock, "meebu address already set");
+        require(meebu == address(0), "meebu address already set");
         meebu = _meebu;
 
-        setLock = true;
     }
+
     function createDAO(address _owner) public returns (address) {
         DAO newDAO = new DAO(meebu);
 
