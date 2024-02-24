@@ -1,6 +1,6 @@
 module dapp
 
-go 1.21.1
+go 1.22
 
 require (
 	github.com/ethereum/go-ethereum v1.13.10

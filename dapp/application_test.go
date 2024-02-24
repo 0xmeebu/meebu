@@ -37,10 +37,10 @@ func (s *MeebuSuite) TestCreateOrg() {
 	s.Equal(result.Reports[0].Payload, []byte("CreateOrg message received"))
 }
 
-func (s *MeebuSuite) TestCreateIssue() {
+func (s *MeebuSuite) TestCreateProposal() {
 	input := `
 	{
-		"Method":"CreateIssue",
+		"Method":"CreateProposal",
 		"Body": {
 			"OrgAddress":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A",
 			"Erc20Weights":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A","Weight":11,"TimeWeighted":false}],
@@ -54,7 +54,7 @@ func (s *MeebuSuite) TestCreateIssue() {
 	s.Nil(result.Err)
 
 	s.Len(result.Reports, 1)
-	s.Equal(result.Reports[0].Payload, []byte("CreateIssue message received"))
+	s.Equal(result.Reports[0].Payload, []byte("CreateProposal message received"))
 }
 
 func (s *MeebuSuite) TestInspect() {}

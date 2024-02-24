@@ -11,32 +11,32 @@ import (
 // Deposit Erc20
 // Deposit Erc721
 
-/// Custom Advance Messages:
+/// Custom Messages:
 
 type Method string
 
 const (
-	CreateOrgMethod   Method = "CreateOrg"
-	CreateIssueMethod Method = "CreateIssue"
+	CreateOrgMethod      Method = "CreateOrg"
+	CreateProposalMethod Method = "CreateProposal"
 )
 
-/*
-	{
-	  "method":string,
-	  "body":object
-	}
-*/
 type Message struct {
 	Method Method
 	Body   json.RawMessage
 }
+
+//
+// Custom Advance Messages Definition
+//
 
 type CreateOrg struct {
 	NewOrgAddress common.Address
 	AllowedTokens []common.Address
 }
 
-type CreateIssue struct {
+type CreateProposal struct {
+	Title             string
+	Description       string
 	OrgAddress        common.Address
 	Erc20Weights      []Erc20Weights
 	Erc721Multipliers []Erc721Multipliers
@@ -46,16 +46,18 @@ type CreateIssue struct {
 
 type CastVote struct {
 	OrgAddress common.Address
-	Issue      uint
+	Proposal   uint
 	Policy     []uint
 }
 
 type CountVotes struct {
 	OrgAddress common.Address
-	Issue      uint
+	Proposal   uint
 }
 
-/// Data
+//
+// Auxiliary Data
+//
 
 type Erc20Weights struct {
 	Address      common.Address
@@ -94,4 +96,6 @@ func (h *Policy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-/// Custom Inspect Messages:
+//
+// Custom Inspect Messages:
+//

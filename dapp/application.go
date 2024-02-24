@@ -32,12 +32,12 @@ func (a *RootState) Advance(
 		}
 		env.Report([]byte("CreateOrg message received"))
 
-	case state.CreateIssueMethod:
-		var body state.CreateIssue
+	case state.CreateProposalMethod:
+		var body state.CreateProposal
 		if err := json.Unmarshal(message.Body, &body); err != nil {
 			return fmt.Errorf("failed to unmarshal body: %w", err)
 		}
-		env.Report([]byte("CreateIssue message received"))
+		env.Report([]byte("CreateProposal message received"))
 	}
 
 	return nil
