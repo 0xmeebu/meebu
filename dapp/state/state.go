@@ -5,7 +5,9 @@ import (
 	"github.com/holiman/uint256"
 )
 
-/// Meebu root State
+//
+// Meebu root State
+//
 
 type MeebuState struct {
 	OrgFactory common.Address
@@ -13,7 +15,9 @@ type MeebuState struct {
 	Voters     Voters
 }
 
-/// Voter Data
+//
+// Voter Data
+//
 
 type Voters map[common.Address]*VoterBalance
 
@@ -38,7 +42,9 @@ type Erc20TokenDeposit struct {
 	Timestamp uint64
 }
 
-/// Org Data
+//
+// Org Data
+//
 
 type Org struct {
 	// configs
@@ -46,10 +52,10 @@ type Org struct {
 	Erc721Tokens map[common.Address]bool
 
 	//
-	Issues []Issue
+	Proposals []Proposal
 }
 
-type Issue struct {
+type Proposal struct {
 	// Metadata
 	Created int64
 
