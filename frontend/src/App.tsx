@@ -16,13 +16,11 @@ import { init } from "@web3-onboard/react";
 import { useState } from "react";
 
 import { GraphQLProvider } from "./GraphQL";
-import { Notices } from "./Notices";
-import { Input } from "./Input";
-import { Inspect } from "./Inspect";
 import { Network } from "./Network";
-import { Vouchers } from "./Vouchers";
-import { Reports } from "./Reports";
 import configFile from "./config.json";
+
+import ActionMenu from "./Components/ActionsMenu";
+import ProposalsGrid from "./Components/ProposalsGrid";
 
 import '@mantine/core/styles.css'
 
@@ -36,9 +34,9 @@ init({
     wallets: [injected],
     chains: Object.entries(config).map(([k, v]: [string, any], i) => ({id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl})),
     appMetadata: {
-        name: "Cartesi Rollups Test DApp",
+        name: "Meebu",
         icon: "<svg><svg/>",
-        description: "Demo app for Cartesi Rollups",
+        description: "Governance layer",
         recommendedInjectedWallets: [
             { name: "MetaMask", url: "https://metamask.io" },
         ],
@@ -48,7 +46,7 @@ init({
 const App: FC = () => {
     const [dappAddress, setDappAddress] = useState<string>("0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C");
 
-    const myColor: MantineColorsTuple = [
+    const pink: MantineColorsTuple = [
         '#ffe8ff',
         '#ffcfff',
         '#ff9bff',
@@ -63,7 +61,7 @@ const App: FC = () => {
       
       const theme = createTheme({
         colors: {
-          myColor,
+          pink,
         }
       });
 
@@ -71,26 +69,9 @@ const App: FC = () => {
         <div>
             <MantineProvider theme={theme}>
             <Network />
-            <Button variant="filled" color="myColor">Hello</Button>
             <GraphQLProvider>
-                <div>
-                    Dapp Address: <input
-                        type="text"
-                        value={dappAddress}
-                        onChange={(e) => setDappAddress(e.target.value)}
-                    />
-                    <br /><br />
-                </div>
-                <h2>Inspect</h2>
-                <Inspect />
-                <h2>Input</h2>
-                <Input dappAddress={dappAddress} />
-                <h2>Reports</h2>
-                <Reports />
-                <h2>Notices</h2>
-                <Notices />
-                <h2>Vouchers</h2>
-                <Vouchers dappAddress={dappAddress} />
+            <ActionMenu />    
+            <ProposalsGrid />
             </GraphQLProvider>
             </MantineProvider>
         </div>
