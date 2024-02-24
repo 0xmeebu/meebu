@@ -3,6 +3,8 @@ package state
 import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/holiman/uint256"
+
+	"dapp/tally"
 )
 
 //
@@ -10,9 +12,12 @@ import (
 //
 
 type MeebuState struct {
+	// Config
 	OrgFactory common.Address
-	Orgs       map[common.Address]Org
-	Voters     Voters
+
+	// Data
+	Orgs   map[common.Address]*Org
+	Voters Voters
 }
 
 //
@@ -66,12 +71,7 @@ type Proposal struct {
 	TallyingSystem    TallyingSystemId
 
 	// State
-	Tally    OrdinalTally
+	Tally    tally.OrdinalTally
 	Open     bool
 	HasVoted map[common.Address]bool
-}
-
-type OrdinalTally interface {
-	AddVote(policy []uint, power uint)
-	CloseVoting() uint
 }
