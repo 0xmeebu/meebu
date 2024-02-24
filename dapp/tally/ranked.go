@@ -1,6 +1,7 @@
 package tally
 
 import (
+	"fmt"
 	"github.com/holiman/uint256"
 )
 
@@ -21,11 +22,18 @@ func NewRankedTally(totalPolicies uint) RankedTally {
 	return RankedTally{totalPolicies, uint256.NewInt(0), votes}
 }
 
-// TODO: verify vote boundary
-func (t *RankedTally) AddVote(preferences []uint, power *uint256.Int) {
+func (t *RankedTally) AddVote(preferences []uint, power *uint256.Int) error {
+	for _, p := range preferences {
+		if p >= t.TotalPolicies {
+			return fmt.Errorf("Policy %d is out of bounds; there are %d policies", p, t.TotalPolicies)
+		}
+	}
+
 	v := Vote{preferences, power}
 	t.Votes = append(t.Votes, &v)
 	t.TotalVotes.Add(t.TotalVotes, power)
+
+	return nil
 }
 
 func (t *RankedTally) CloseVoting() uint {
