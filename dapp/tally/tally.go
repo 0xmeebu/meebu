@@ -5,6 +5,6 @@ import (
 )
 
 type OrdinalTally interface {
-	AddVote(preferences []uint, power uint256.Int)
+	AddVote(preferences []uint, power uint256.Int) error
 	CloseVoting() uint
 }
