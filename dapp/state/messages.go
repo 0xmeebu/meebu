@@ -1,6 +1,9 @@
 package state
 
 import (
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -8,7 +11,25 @@ import (
 // Deposit Erc20
 // Deposit Erc721
 
-/// Custom Messages:
+/// Custom Advance Messages:
+
+type Method string
+
+const (
+	CreateOrgMethod   Method = "CreateOrg"
+	CreateIssueMethod Method = "CreateIssue"
+)
+
+/*
+	{
+	  "method":string,
+	  "body":object
+	}
+*/
+type Message struct {
+	Method Method
+	Body   json.RawMessage
+}
 
 type CreateOrg struct {
 	NewOrgAddress common.Address
@@ -54,3 +75,23 @@ const (
 )
 
 type Policy []byte
+
+func (h *Policy) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+
+	if s[0:2] != "0x" {
+		return fmt.Errorf("Malformed hex string, doesn't start with '0x': %s", s)
+	}
+
+	decoded, err := hex.DecodeString(s[2:])
+	if err != nil {
+		return err
+	}
+	*h = Policy(decoded)
+	return nil
+}
+
+/// Custom Inspect Messages:
