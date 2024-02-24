@@ -24,6 +24,11 @@ import { Vouchers } from "./Vouchers";
 import { Reports } from "./Reports";
 import configFile from "./config.json";
 
+import '@mantine/core/styles.css'
+
+import { MantineProvider, createTheme, MantineColorsTuple, Button } from '@mantine/core';
+
+
 const config: any = configFile;
 
 const injected: any = injectedModule();
@@ -43,9 +48,30 @@ init({
 const App: FC = () => {
     const [dappAddress, setDappAddress] = useState<string>("0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C");
 
+    const myColor: MantineColorsTuple = [
+        '#ffe8ff',
+        '#ffcfff',
+        '#ff9bff',
+        '#ff64ff',
+        '#fe38fe',
+        '#fe1cfe',
+        '#ff09ff',
+        '#e400e4',
+        '#cb00cb',
+        '#b100b2'
+      ];
+      
+      const theme = createTheme({
+        colors: {
+          myColor,
+        }
+      });
+
     return (
         <div>
+            <MantineProvider theme={theme}>
             <Network />
+            <Button variant="filled" color="myColor">Hello</Button>
             <GraphQLProvider>
                 <div>
                     Dapp Address: <input
@@ -66,7 +92,9 @@ const App: FC = () => {
                 <h2>Vouchers</h2>
                 <Vouchers dappAddress={dappAddress} />
             </GraphQLProvider>
+            </MantineProvider>
         </div>
+        
     );
 };
 
