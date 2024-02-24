@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-contract DAO {
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+
+contract DAO is AccessControl {
+    bytes32 public constant MEEBU_ROLE = keccak256("MEEBU_ROLE");
 
     struct Voucher {
         address target;
@@ -10,7 +13,13 @@ contract DAO {
 
     event PolicyExecuted(address target, bool success);
 
-    function executePolicy(bytes calldata _vouchers) public {
+    constructor(address _meebu) {
+        // give meebu the meebu role
+        // so that it can execute policies
+        _grantRole(MEEBU_ROLE, _meebu);
+    }
+
+    function executePolicy(bytes calldata _vouchers) public onlyRole(MEEBU_ROLE) {
         Voucher[] memory vouchers = abi.decode(_vouchers, (Voucher[]));
 
         for (uint i = 0; i < vouchers.length; i++) {

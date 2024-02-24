@@ -14,19 +14,29 @@ interface IInputBox {
 contract DAOFactory {
 
     IInputBox internal immutable inputBox;
-    address immutable meebu;
+    address meebu;
+    bool private setLock = false;
 
     event DAOCreated(address indexed daoAddr);
 
-    constructor(address _meebu, IInputBox _inputBox) {
+    constructor(IInputBox _inputBox) {
         inputBox =  _inputBox;
-        meebu = _meebu;
     }
 
-    function createDAO() public returns (address) {
-        DAO newDAO = new DAO();
+    // can only be set once
+    function setMeebuAddress(address _meebu) public {
+        require(!setLock, "meebu address already set");
+        meebu = _meebu;
+
+        setLock = true;
+    }
+    function createDAO(address _owner) public returns (address) {
+        DAO newDAO = new DAO(meebu);
+
         address daoAddr = address(newDAO);
-        bytes memory payload = abi.encode(daoAddr);
+
+        // the input is the DAO address and it's owner
+        bytes memory payload = abi.encode(daoAddr, _owner);
 
         inputBox.addInput(meebu, payload);
 
