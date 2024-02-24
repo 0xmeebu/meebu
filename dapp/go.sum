@@ -10,8 +10,6 @@ github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0 h1:8UrgZ3GkP4i/CLijOJx79Yu+etly
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0/go.mod h1:v57UDF4pDQJcEfFUCRop3lJL149eHGSe9Jvczhzjo/0=
 github.com/ethereum/go-ethereum v1.13.10 h1:Ppdil79nN+Vc+mXfge0AuUgmKWuVv4eMqzoIVSdqZek=
 github.com/ethereum/go-ethereum v1.13.10/go.mod h1:sc48XYQxCzH3fG9BcrXCOOgQk2JfZzNAmIKnceogzsA=
-github.com/gligneul/rollmelette v0.0.0-20240111171853-3fb3d3a04456 h1:I2rY+ejw7JWCyPY5P9tUTls2gnl8DHBXrrasbYziN6o=
-github.com/gligneul/rollmelette v0.0.0-20240111171853-3fb3d3a04456/go.mod h1:EcdAH5wz7/Mb+6XlGGVYd+tThxB8yCglI5tsM4aeIgQ=
 github.com/gligneul/rollmelette v0.1.0 h1:jsL09L9ipk4r1FDb5crZ0bhruNXepij8Gq/w0V8CvBk=
 github.com/gligneul/rollmelette v0.1.0/go.mod h1:EcdAH5wz7/Mb+6XlGGVYd+tThxB8yCglI5tsM4aeIgQ=
 github.com/google/gofuzz v1.2.0 h1:xRy4A+RhZaiKjJ1bPfwQ8sedCA+YS2YcCHW6ec7JMi0=
