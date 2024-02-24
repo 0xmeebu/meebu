@@ -7,11 +7,16 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-/// Native Messages:
+//
+// Native Messages:
+//
+
 // Deposit Erc20
 // Deposit Erc721
 
-/// Custom Messages:
+//
+// Custom Messages:
+//
 
 type Method string
 
@@ -31,7 +36,7 @@ type Message struct {
 
 type CreateOrg struct {
 	NewOrgAddress common.Address
-	AllowedTokens []common.Address
+	// AllowedTokens []common.Address
 }
 
 type CreateProposal struct {
@@ -74,6 +79,7 @@ type TallyingSystemId uint
 
 const (
 	SINGLE_CHOICE TallyingSystemId = iota
+	RANKED_VOTING TallyingSystemId = iota
 )
 
 type Policy []byte
