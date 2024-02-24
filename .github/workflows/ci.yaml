@@ -20,6 +20,6 @@ jobs:
           version: latest
           working-directory: dapp
 
-    - name: Test
+    - name: Test dapp
       working-directory: dapp
       run: make test
