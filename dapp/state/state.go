@@ -20,6 +20,14 @@ type MeebuState struct {
 	Voters Voters
 }
 
+func NewMeebu(orgFactory common.Address) *MeebuState {
+	return &MeebuState{
+		OrgFactory: orgFactory,
+		Orgs:       make(map[common.Address]*Org),
+		Voters:     make(map[common.Address]*VoterBalance),
+	}
+}
+
 func (s *MeebuState) Voter(address common.Address) *VoterBalance {
 	return s.Voters[address]
 }
@@ -97,16 +105,18 @@ func (vb *VoterBalance) VotingPower(
 
 type Org struct {
 	// configs
-	Erc20Tokens  map[common.Address]bool
-	Erc721Tokens map[common.Address]bool
+	// Erc20Tokens  map[common.Address]bool
+	// Erc721Tokens map[common.Address]bool
 
 	//
-	Proposals []Proposal
+	Proposals []*Proposal
 }
 
 type Proposal struct {
 	// Metadata
-	Created int64
+	// Created int64
+	Title       string
+	Description string
 
 	// Config
 	Erc20Weights      map[common.Address]Erc20Weight

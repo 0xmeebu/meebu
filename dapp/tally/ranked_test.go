@@ -1,10 +1,10 @@
 package tally
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/holiman/uint256"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRankedVote(t *testing.T) {
@@ -27,5 +27,5 @@ func TestRankedVote(t *testing.T) {
 	}
 
 	winner := rankedTally.CloseVoting()
-	fmt.Printf("The winner is: %d\n", winner)
+	assert.Equal(t, winner, uint64(2))
 }
