@@ -27,9 +27,9 @@ cd baselayer
 forge script script/DeployScript.s.sol --broadcast --rpc-url http://localhost:8545 --private-key $PRIVATE-KEY
 ```
 
-If you're using Anvil, you can use it's first generated account for testing:
+If you're using Anvil, you can use it's last generated account for testing:
 ```
-forge script script/DeployScript.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+forge script script/DeployScript.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 ```
 
 Step 2:
@@ -41,7 +41,7 @@ cast send $DAO-FACTORY-ADDRESS "setMeebuAddress(address)" $MEEBU-ADDRESS --rpc-u
 Or, using the Anvil hardcoded addresses and the nonodo/sunodo default addresses for accounts and dapps:
 
 ```
-cast send 0x59b670e9fA9D0A427751Af201D676719a970857b "setMeebuAddress(address)" 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 "setMeebuAddress(address)" 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C --rpc-url http://localhost:8545 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 ```
 
 Step 3:
@@ -54,11 +54,11 @@ cast calldata "createDAO(address)" "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 ```
 Send the transcation:
 ```
-cast send 0x59b670e9fA9D0A427751Af201D676719a970857b $ENCODED_FROM_PREVIOUS_STEP --rpc-url http://localhost:8545 --private-key <private-key>
+cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 $ENCODED_FROM_PREVIOUS_STEP --rpc-url http://localhost:8545 --private-key <private-key>
 ```
 Example:
 ```
-cast send 0x59b670e9fA9D0A427751Af201D676719a970857b 0x131773d6000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266 --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 0x131773d6000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266 --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
 You should now see and input arrive at nonodo/sunodo.
