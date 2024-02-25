@@ -4,8 +4,8 @@ function ActionMenu() {
   return (
     <Group justify="flex-start" gap="sm">
       <SideDrawer/>
-      <Button variant="default">Register DAO</Button>
-      <Button variant="default">Create Proposal</Button>
+      <Button>Register DAO</Button>
+      <Button>Create Proposal</Button>
 
     </Group>
   );

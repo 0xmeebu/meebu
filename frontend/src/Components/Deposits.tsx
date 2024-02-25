@@ -15,7 +15,7 @@ import { ethers } from "ethers";
 import { useRollups } from "../useRollups";
 import { useWallets } from "@web3-onboard/react";
 import { IERC1155__factory, IERC20__factory, IERC721__factory } from "../generated/rollups";
-
+import { Button } from "@mantine/core";
 interface IInputPropos {
     dappAddress: string 
 }
@@ -233,9 +233,9 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={etherAmount}
                     onChange={(e) => setEtherAmount(Number(e.target.value))}
                 />
-                <button onClick={() => depositEtherToPortal(etherAmount)} disabled={!rollups}>
+                <Button onClick={() => depositEtherToPortal(etherAmount)} disabled={!rollups}>
                     Deposit Ether
-                </button>
+                </Button>
                 <br /><br />
             </div>
             <div>
@@ -250,9 +250,9 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={erc20Amount}
                     onChange={(e) => setErc20Amount(Number(e.target.value))}
                 />
-                <button onClick={() => depositErc20ToPortal(erc20Token,erc20Amount)} disabled={!rollups}>
+                <Button onClick={() => depositErc20ToPortal(erc20Token,erc20Amount)} disabled={!rollups}>
                     Deposit ERC20
-                </button>
+                </Button>
                 <br /><br />
             </div>
             <div>
@@ -267,9 +267,9 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={erc721Id}
                     onChange={(e) => setErc721Id(Number(e.target.value))}
                 />
-                <button onClick={() => transferNftToPortal(erc721,erc721Id)} disabled={!rollups}>
+                <Button onClick={() => transferNftToPortal(erc721,erc721Id)} disabled={!rollups}>
                     Transfer NFT
-                </button>
+                </Button>
                 <br /><br />
             </div>
         </div>

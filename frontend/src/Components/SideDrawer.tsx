@@ -13,7 +13,7 @@ function SideDrawer() {
         <Input dappAddress={dappAddress} />
       </Drawer>
 
-      <Button onClick={open} variant='outline' color='pink'>Wallet</Button>
+      <Button onClick={open} color='pink'>Wallet</Button>
     </>
   );
 }
