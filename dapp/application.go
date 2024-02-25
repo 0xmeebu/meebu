@@ -38,6 +38,16 @@ func (a *RootState) Advance(
 			return fmt.Errorf("failed to unmarshal body: %w", err)
 		}
 		env.Report([]byte("CreateProposal message received"))
+
+	case state.CastVoteMethod:
+		var body state.CreateProposal
+		if err := json.Unmarshal(message.Body, &body); err != nil {
+			return fmt.Errorf("failed to unmarshal body: %w", err)
+		}
+		env.Report([]byte("CastVote message received"))
+
+		// s := metadata.Sender
+
 	}
 
 	return nil

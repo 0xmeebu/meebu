@@ -23,6 +23,7 @@ type Method string
 const (
 	CreateOrgMethod      Method = "CreateOrg"
 	CreateProposalMethod Method = "CreateProposal"
+	CastVoteMethod       Method = "CastVote"
 )
 
 type Message struct {
@@ -78,13 +79,18 @@ type Erc721Multipliers struct {
 type TallyingSystemId uint
 
 const (
-	SINGLE_CHOICE TallyingSystemId = iota
 	RANKED_VOTING TallyingSystemId = iota
+	SINGLE_CHOICE TallyingSystemId = iota
 )
 
-type Policy []byte
+type Policy struct {
+	Voucher     PolicyVoucher
+	Description string
+}
 
-func (h *Policy) UnmarshalJSON(data []byte) error {
+type PolicyVoucher []byte
+
+func (h *PolicyVoucher) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
@@ -98,7 +104,7 @@ func (h *Policy) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*h = Policy(decoded)
+	*h = PolicyVoucher(decoded)
 	return nil
 }
 
