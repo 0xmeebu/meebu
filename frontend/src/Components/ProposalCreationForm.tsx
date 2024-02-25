@@ -4,6 +4,15 @@ import {NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text,
 import tokens from '../tokenList';
 
 function ProposalCreationForm() {
+  const [active, setActive] = useState(0);
+  const nextStep = () =>
+    setActive((current) => {
+      if (form.validate().hasErrors) {
+        return current;
+      }
+      return current < 3 ? current + 1 : current;
+    });
+    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const form = useForm({
     initialValues: {
@@ -121,6 +130,8 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
   
 return (
 <>
+<Stepper active={active} color='pink'>
+<Stepper.Step label="First step" description="Profile settings">
 <h1>Create Proposal</h1>
 <h2>General Information</h2>
 <Autocomplete
@@ -131,7 +142,9 @@ return (
     />
   <TextInput label="Title" placeholder="what is the proposal deciding about" {...form.getInputProps('title')} />
   <Textarea label="Description" placeholder="Detail your proposal" {...form.getInputProps('description')} />
-  
+  </Stepper.Step>
+
+  <Stepper.Step label="Second step" description="Personal information">
   <h2>Governance Model</h2>
 
   <h3>Voting System</h3>
@@ -193,7 +206,9 @@ return (
       </Group>      
 </Box>
 
+</Stepper.Step>
 
+<Stepper.Step label="Final step" description="Social media">
     <h2>Set Policies</h2>
 
     <Box maw={500} mx="auto">
@@ -219,15 +234,25 @@ return (
         </Button>
       </Group>      
       </Box>
+      </Stepper.Step>
+        <Stepper.Completed>
+        Completed! Form values:
+          <Code block mt="xl">
+            {JSON.stringify(form.values, null, 2)}
+          </Code>
+          
+        </Stepper.Completed>
+      </Stepper>
 
-
-
-      <Text size="sm" fw={500} mt="md">
-        Form values:
-      </Text>
-    <Code block>{JSON.stringify(form.values, null, 2)}</Code>
-
-
+      <Group justify="flex-end" mt="xl">
+        {active !== 0 && (
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
+        )}
+        {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
+        {active ==3 && <Button> Submit Proposal </Button>}
+      </Group>
 </>
   );
 }

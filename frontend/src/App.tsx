@@ -79,8 +79,7 @@ const App: FC = () => {
             <Network />
             <GraphQLProvider>
             <ActionMenu />    
-             {/* <ProposalsGrid /> */}
-             <ProposalCreationForm />
+             <ProposalsGrid />
             </GraphQLProvider>
             </MantineProvider>
         </div>
