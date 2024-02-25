@@ -21,6 +21,7 @@ import configFile from "./config.json";
 
 import ActionMenu from "./Components/ActionsMenu";
 import ProposalsGrid from "./Components/ProposalsGrid";
+import ProposalCreationForm from "./Components/ProposalCreationForm"
 
 import '@mantine/core/styles.css'
 
@@ -62,7 +63,14 @@ const App: FC = () => {
       const theme = createTheme({
         colors: {
           pink,
-        }
+        },
+        components: {
+            Button: Button.extend({
+              defaultProps: {
+                color: 'pink',
+                variant: 'light',
+              }
+            })}
       });
 
     return (
@@ -71,7 +79,8 @@ const App: FC = () => {
             <Network />
             <GraphQLProvider>
             <ActionMenu />    
-            <ProposalsGrid />
+             {/* <ProposalsGrid /> */}
+             <ProposalCreationForm />
             </GraphQLProvider>
             </MantineProvider>
         </div>
