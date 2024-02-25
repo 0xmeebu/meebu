@@ -1,6 +1,8 @@
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
-import {JsonInput, CloseButton, Switch, ActionIcon, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea ,PasswordInput, Code } from '@mantine/core';
+import {NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
+import tokens from '../tokenList';
+
 function ProposalCreationForm() {
 
   const form = useForm({
@@ -40,16 +42,20 @@ function ProposalCreationForm() {
   ];
 
 
+
+
 const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
     <Group key={index} mt="xs">
-      <TextInput
-        placeholder="0x0"
+      <Select
+        data = {tokens}
+        searchable 
+        placeholder="Token Symbol"
         withAsterisk
         style={{ flex: 1 }}
         {...form.getInputProps(`ERC20Weights.${index}.address`)}
       />
-      <TextInput
-        placeholder="0.0"
+      <NumberInput
+        placeholder="weight"
         withAsterisk
         style={{ flex: 1 }}
         {...form.getInputProps(`ERC20Weights.${index}.weight`)}
@@ -65,14 +71,17 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
 
   const ERC721Fields = form.values.ERC721Weights.map((item, index) => (
     <Group key={index} mt="xs">
-      <TextInput
-        placeholder="0x0"
+    <Select
+        data = {tokens}
+        searchable 
+        placeholder="Token Symbol"
         withAsterisk
         style={{ flex: 1 }}
         {...form.getInputProps(`ERC721Weights.${index}.address`)}
       />
-      <TextInput
-        placeholder="0.0"
+      <NumberInput
+        placeholder="bonus"
+        suffix="%"
         withAsterisk
         style={{ flex: 1 }}
         {...form.getInputProps(`ERC721Weights.${index}.weight`)}
@@ -135,9 +144,6 @@ return (
 <Box maw={500} mx="auto">
       {ERC20Fields.length > 0 ? (
         <Group mb="xs">
-          <Text fw={500} size="sm" style={{ flex: 1 }}>
-            Token Address
-          </Text>
           
         </Group>
       ) : (
@@ -151,7 +157,7 @@ return (
       <Group justify="flex-start" mt="md">
         <Button color='pink'
           onClick={() =>
-            form.insertListItem('ERC20Weights', { name: '', weight: 0, timeWeighted: false})
+            form.insertListItem('ERC20Weights', { address: '', weight: 0, timeWeighted: false})
           }
         >
           Add Token
@@ -166,9 +172,6 @@ return (
     <Box maw={500} mx="auto">
       {ERC721Fields.length > 0 ? (
         <Group mb="xs">
-          <Text fw={500} size="sm" style={{ flex: 1 }}>
-            Token Address
-          </Text>
           
         </Group>
       ) : (
@@ -182,7 +185,7 @@ return (
       <Group justify="flex-start" mt="md">
         <Button color='pink'
           onClick={() =>
-            form.insertListItem('ERC721Weights', { name: '', weight: 0})
+            form.insertListItem('ERC721Weights', { address: '', weight: 0})
           }
         >
           Add NFT
