@@ -5,7 +5,7 @@ import "forge-std/Script.sol";
 import "../src/DAOFactory.sol";
 
 contract DeployScript is Script {
-    IInputBox inputBox = IInputBox(address(1));
+    IInputBox inputBox = IInputBox(address(0x59b22D57D4f067708AB0c00552767405926dc768));
 
     function run() external {
         vm.startBroadcast(); // Start a transaction broadcast
