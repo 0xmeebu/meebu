@@ -42,11 +42,13 @@ func (s *MeebuSuite) TestCreateProposal() {
 	{
 		"Method":"CreateProposal",
 		"Body": {
+			"Title":"title",
+			"Description":"description",
 			"OrgAddress":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A",
 			"Erc20Weights":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A","Weight":11,"TimeWeighted":false}],
 			"Erc721Multipliers":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A","Multiplier":42}],
 			"TallyingSystem":0,
-			"Ballot":["0xdeadbeef","0xdeadbeef"]
+			"Ballot":[{"Description":"bananas","Voucher":"0xdeadbeef"}]
 		}
 	}`
 

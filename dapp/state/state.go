@@ -20,6 +20,10 @@ type MeebuState struct {
 	Voters Voters
 }
 
+func (s *MeebuState) Voter(address common.Address) *VoterBalance {
+	return s.Voters[address]
+}
+
 //
 // Voter Data
 //
@@ -36,15 +40,55 @@ type VoterBalance struct {
 
 type Erc20Balance struct {
 	// Total balance
-	Balance uint256.Int
+	Balance *uint256.Int
 
 	// Deposits, for time-weighted voting
 	Deposits []Erc20TokenDeposit
 }
 
 type Erc20TokenDeposit struct {
-	Value     uint256.Int
+	Value     *uint256.Int
 	Timestamp uint64
+}
+
+func NewVoter() VoterBalance {
+	return VoterBalance{make(map[common.Address]*Erc20Balance), make(map[common.Address]bool)}
+}
+
+func (vb *VoterBalance) DepositErc20Token(address common.Address, amount *uint256.Int) {
+	b, ok := vb.Erc20Balances[address]
+	if !ok {
+		vb.Erc20Balances[address] = &Erc20Balance{amount, make([]Erc20TokenDeposit, 0)}
+	} else {
+		b.Balance.Add(b.Balance, amount)
+	}
+}
+
+func (vb *VoterBalance) DepositErc721Token(address common.Address) {
+	vb.Erc721Owned[address] = true
+}
+
+func (vb *VoterBalance) VotingPower(
+	weights map[common.Address]Erc20Weight,
+	multipliers map[common.Address]uint64) *uint256.Int {
+	power := uint256.NewInt(0)
+
+	for address, weight := range weights {
+		w := uint256.NewInt(weight.Weight)
+		balance := vb.Erc20Balances[address].Balance
+		w.Mul(w, balance)
+		power.Add(power, w)
+	}
+
+	for address, multiplier := range multipliers {
+		if vb.Erc721Owned[address] {
+			m := uint256.NewInt(multiplier)
+			power.Mul(power, m)
+			power.Div(power, uint256.NewInt(100))
+		}
+	}
+
+	return power
 }
 
 //
@@ -65,7 +109,7 @@ type Proposal struct {
 	Created int64
 
 	// Config
-	Erc20Weights      map[common.Address]uint64
+	Erc20Weights      map[common.Address]Erc20Weight
 	Erc721Multipliers map[common.Address]uint64
 	Ballot            []Policy
 	TallyingSystem    TallyingSystemId
@@ -74,4 +118,9 @@ type Proposal struct {
 	Tally    tally.OrdinalTally
 	Open     bool
 	HasVoted map[common.Address]bool
+}
+
+type Erc20Weight struct {
+	Weight       uint64
+	TimeWeighted bool
 }
