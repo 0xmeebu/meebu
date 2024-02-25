@@ -1,4 +1,5 @@
 import { Card, Image, Text, Badge, Button, Group, Stack} from '@mantine/core';
+import TokenWeights from './TokenWeights';
 
 interface Erc20Weights {
   address: string;
@@ -42,6 +43,8 @@ function ProposalCard(props: ProposalCardProps) {
       <Text size="sm" c="dimmed">
         {props.description}
       </Text>
+
+      <TokenWeights />
 
       <Button color="pink" fullWidth mt="md" radius="md">
         Vote
