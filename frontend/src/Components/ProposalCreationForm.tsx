@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
-import {CloseButton, Switch, ActionIcon, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea ,PasswordInput, Code } from '@mantine/core';
+import {JsonInput, CloseButton, Switch, ActionIcon, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea ,PasswordInput, Code } from '@mantine/core';
 function ProposalCreationForm() {
 
   const form = useForm({
@@ -20,11 +20,7 @@ function ProposalCreationForm() {
       tallyingSystem: 0,
       ballot: [{
         description: '',
-        vouchers: [{
-            target: '',
-            payload: '',
-            timeWeighted: false
-        }]
+        vouchers: ''
       }]
     },
   });
@@ -86,8 +82,9 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
     </Group>
   ));
 
-
-  const policyFields = form.values.ballot.map((item, index) => (
+  const policyFields =
+    
+    form.values.ballot.map((item, index) => (
     <Group key={index} mt="xs">
       <TextInput
         placeholder="Policy Statement"
@@ -95,10 +92,23 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
         style={{ flex: 1 }}
         {...form.getInputProps(`ballot.${index}.description`)}
       />
+       <JsonInput
+      label="Base layer side efects"
+      placeholder="[{'0x0', 'transfer(address, uint)', [0x1, 1000]}]"
+      validationError="Invalid JSON"
+      formatOnBlur
+      autosize
+      minRows={4}
+      {...form.getInputProps(`ballot.${index}.vouchers`)}
+    />
       <CloseButton  onClick={() => form.removeListItem('ballot', index)}>
       </CloseButton>
     </Group>
   ));
+    
+
+
+
   
 return (
 <>
@@ -186,10 +196,7 @@ return (
     <Box maw={500} mx="auto">
       {policyFields.length > 0 ? (
         <Group mb="xs">
-          <Text fw={500} size="sm" style={{ flex: 1 }}>
-            Policy Statement
-          </Text>
-          
+
         </Group>
       ) : (
         <Text c="dimmed">
@@ -202,7 +209,7 @@ return (
       <Group justify="flex-start" mt="md">
       <Button color='pink'
           onClick={() =>
-            form.insertListItem('ballot', { description: '', vouchers: [{}]})
+            form.insertListItem('ballot', { description: '', vouchers: ''})
           }
         >
           Add Policy
