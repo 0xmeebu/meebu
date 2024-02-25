@@ -1,7 +1,6 @@
 package state
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"

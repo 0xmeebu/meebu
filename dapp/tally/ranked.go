@@ -17,9 +17,9 @@ type Vote struct {
 	Power       *uint256.Int
 }
 
-func NewRankedTally(totalPolicies uint) RankedTally {
+func NewRankedTally(totalPolicies uint) *RankedTally {
 	votes := make([]*Vote, 0, 256)
-	return RankedTally{totalPolicies, uint256.NewInt(0), votes}
+	return &RankedTally{totalPolicies, uint256.NewInt(0), votes}
 }
 
 func (t *RankedTally) AddVote(preferences []uint, power *uint256.Int) error {
@@ -36,7 +36,7 @@ func (t *RankedTally) AddVote(preferences []uint, power *uint256.Int) error {
 	return nil
 }
 
-func (t *RankedTally) CloseVoting() uint {
+func (t *RankedTally) CloseVoting() uint64 {
 	majority := t.TotalVotes.Clone()
 	majority.Rsh(majority, 1)
 	majority.Add(majority, uint256.NewInt(1))
@@ -58,7 +58,7 @@ func (t *RankedTally) CloseVoting() uint {
 		// Check for a majority
 		for candidate, count := range counts {
 			if count.Cmp(majority) >= 0 {
-				return uint(candidate)
+				return uint64(candidate)
 			}
 		}
 
