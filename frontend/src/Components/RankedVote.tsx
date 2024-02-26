@@ -16,6 +16,7 @@ interface RankedVoteProps {
 function RankedVote(props: RankedVoteProps) {
   const form = useForm({
     initialValues: {
+      orgAddress: props.orgAddress,
       issueIndex: props.issueIndex,
       list: props.policies
     },

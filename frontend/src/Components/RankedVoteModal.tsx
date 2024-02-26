@@ -16,7 +16,7 @@ function RankedVoteModal(props: RankedVoteModalProps) {
   
   return (
     <>
-      <Modal size='auto' opened={opened} onClose={close} title="Ranked Vote">
+      <Modal size='500' opened={opened} onClose={close} title="Ranked Vote">
         <RankedVote policies={props.issuePolicies} issueIndex={props.issueIndex} title={props.issueTitle} description={props.issueDescription} orgAddress={props.issueOrgAddress}/>
       </Modal>
 
