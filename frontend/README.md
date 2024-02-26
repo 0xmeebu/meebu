@@ -35,6 +35,11 @@ yarn
 yarn codegen
 ```
 
+To fix webpack issue
+```shell
+cp webpack.config.js node_modules/react-scripts/config/
+```
+
 to build the app.
 
 ```shell
