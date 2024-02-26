@@ -81,6 +81,21 @@ func (s *MeebuSuite) TestMeebuOrg() {
 
 	s.Len(result.Reports, 2)
 	s.Equal(result.Reports[0].Payload, []byte("CastVote message received"))
+
+	countVotesInput := `
+	{
+		"Method":"CountVotes",
+		"Body": {
+			"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+			"Proposal":0
+		}
+	}`
+	result = s.tester.Advance(msgSender, []byte(countVotesInput))
+	s.Nil(result.Err)
+
+	s.Len(result.Reports, 2)
+	s.Len(result.Vouchers, 1)
+	s.Equal(result.Reports[0].Payload, []byte("CountVotes message received"))
 }
 
 func (s *MeebuSuite) TestInspect() {}

@@ -149,6 +149,34 @@ func (a *RootState) Advance(
 
 		proposal.HasVoted[sender] = true
 		env.Report([]byte(fmt.Sprintf("Voter `%s` with power `%s` has voted with `%v`", sender, power.String(), body.Preference)))
+
+	case state.CountVotesMethod:
+		var body state.CountVotes
+		if err := json.Unmarshal(message.Body, &body); err != nil {
+			return fmt.Errorf("failed to unmarshal body: %w", err)
+		}
+		env.Report([]byte("CountVotes message received"))
+
+		org, ok := a.inner().Orgs[body.OrgAddress]
+		if !ok {
+			return fmt.Errorf("Org `%s` doesn't exist", body.OrgAddress)
+		}
+
+		if body.Proposal >= uint(len(org.Proposals)) {
+			return fmt.Errorf("Proposal `%d` doesn't exist", body.Proposal)
+		}
+
+		proposal := org.Proposals[body.Proposal]
+		if !proposal.Open {
+			return fmt.Errorf("Proposal %d is closed", body.Proposal)
+		}
+
+		winnerIndex := proposal.Tally.CloseVoting()
+		winner := proposal.Ballot[winnerIndex]
+
+		env.Voucher(body.OrgAddress, winner.Voucher)
+		proposal.Open = false
+		env.Report([]byte(fmt.Sprintf("Org `%s` finished proposal `%d`, winner is id `%d` with content `%v`", body.OrgAddress, body.Proposal, winnerIndex, winner.Voucher)))
 	}
 
 	return nil
