@@ -23,3 +23,14 @@ export interface Policy {
   description: string;
   vouchers: string;
   }
+
+  export interface Proposal {
+        title: string;
+        description: string;
+        orgAddress: string;
+        ERC20Weights: TokenWeight[];
+        ERC721Weights: TokenWeight[]; 
+        tallyingSystem: number;
+        policies: Policy[];
+
+      }
