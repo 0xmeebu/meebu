@@ -1,5 +1,5 @@
 import { Group, Button } from '@mantine/core';
-import SideDrawer from './SideDrawer';
+import SideDrawer from './SideDrawer/SideDrawer';
 import ProposalFormModal from './ProposalFormModal';
 
 function ActionMenu() {
