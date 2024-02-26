@@ -1,43 +1,62 @@
-import { Group, TextInput, Box, Text, Code, Button, Center } from '@mantine/core';
+import { Group, TextInput, Box, Text, Code, Button, Center, Stack } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { IconGripVertical } from '@tabler/icons-react';
+import { Policy } from '../Interfaces';
 
-function RankedVote() {
+interface RankedVoteProps {
+        issueIndex: number;
+        title: string;
+        description: string;
+        orgAddress: string;
+        policies: Policy[]
+  }
+  
+
+function RankedVote(props: RankedVoteProps) {
   const form = useForm({
     initialValues: {
-      employees: [
-        { name: 'John Doe', email: 'john@mantine.dev' },
-        { name: 'Bill Love', email: 'bill@mantine.dev' },
-        { name: 'Nancy Eagle', email: 'nanacy@mantine.dev' },
-        { name: 'Lim Notch', email: 'lim@mantine.dev' },
-        { name: 'Susan Seven', email: 'susan@mantine.dev' },
-      ],
+      issueIndex: props.issueIndex,
+      list: props.policies
     },
   });
 
-  const fields = form.values.employees.map((_, index) => (
+  const castVoteInput = () => {
+    console.log(JSON.stringify(form.values, null, 2))
+  }
+
+  const fields = form.values.list.map((_, index) => (
     <Draggable key={index} index={index} draggableId={index.toString()}>
       {(provided) => (
         <Group ref={provided.innerRef} mt="xs" {...provided.draggableProps}>
           <Center {...provided.dragHandleProps}>
-            <IconGripVertical size="1.2rem" />
+            <IconGripVertical color='#FF08FF' size="1.2rem" />
           </Center>
-          <TextInput placeholder="John Doe" {...form.getInputProps(`employees.${index}.name`)} />
-          <TextInput
-            placeholder="example@mail.com"
-            {...form.getInputProps(`employees.${index}.email`)}
-          />
+          <TextInput disabled {...form.getInputProps(`list.${index}.description`)} />
         </Group>
       )}
     </Draggable>
   ));
 
   return (
+    <>
+    <Stack
+      align="flex-start"
+      justify="flex-start"
+      gap="xs">
+          <Text size="sm" fs='italic'>{props.orgAddress}</Text>
+          <Group justify="space-between" mt="md" mb="xs">
+            <Text fw={700}>{props.title}</Text>
+          </Group>
+      <Text size="sm" c="dimmed">
+        {props.description}
+      </Text>
+      </Stack>
+    
     <Box maw={500} mx="auto">
       <DragDropContext
         onDragEnd={({ destination, source }) =>
-          destination?.index !== undefined && form.reorderListItem('employees', { from: source.index, to: destination.index })
+          destination?.index !== undefined && form.reorderListItem('list', { from: source.index, to: destination.index })
         }
       >
         <Droppable droppableId="dnd-list" direction="vertical">
@@ -49,18 +68,10 @@ function RankedVote() {
           )}
         </Droppable>
       </DragDropContext>
-
-      <Group justify="center" mt="md">
-        <Button onClick={() => form.insertListItem('employees', { name: '', email: '' })}>
-          Add employee
-        </Button>
-      </Group>
-
-      <Text size="sm" fw={500} mt="md">
-        Form values:
-      </Text>
-      <Code block>{JSON.stringify(form.values, null, 2)}</Code>
+      <br />
+      <Button onClick={castVoteInput}> Cast Vote </Button>
     </Box>
+    </>
   );
 }
 

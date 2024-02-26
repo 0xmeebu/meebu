@@ -1,40 +1,21 @@
-import { Card, Image, Text, Badge, Button, Group, Stack} from '@mantine/core';
+import { Card, Text, Badge, Button, Group} from '@mantine/core';
 import TokenWeights from './TokenWeights';
 import { TokenWeight } from "../Interfaces"
+import RankedVoteModal from './RankedVoteModal';
+import { Policy } from '../Interfaces';
 
-
-interface Policy {
-  // Structure definition
-}
 
 interface ProposalCardProps {
+  index: number;
   title: string;
   description: string;
   orgAddress: string;
-  // erc20Weights: Erc20Weights[];
-  // erc721Multipliers: Erc721Multipliers[];
+  erc20Weights: TokenWeight[];
+  erc721Multipliers: TokenWeight[];
   tallyingSystem: string;
-  // ballot: Policy[];
+  policies: Policy[];
 }
 
-
-const ERC20Weights = [
-  {
-    "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
-    "weight": 12,
-    "timeWeighted": false
-  },
-  {
-    "address": "0x08d967bb0134F2d07f7cfb6E246680c53927DD30",
-    "weight": 17,
-    "timeWeighted": false
-  },
-  {
-    "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    "weight": 0,
-    "timeWeighted": false
-  }
-]
 
 function ProposalCard(props: ProposalCardProps) {
   return (
@@ -54,15 +35,11 @@ function ProposalCard(props: ProposalCardProps) {
       </Text>
 
       <Group gap="sm">
-      <TokenWeights weights={ERC20Weights} cat='Weight'/>
-      <TokenWeights weights={ERC20Weights} cat='Multiplier'/>
+      <TokenWeights weights={props.erc20Weights} cat='Weight'/>
+      <TokenWeights weights={props.erc721Multipliers} cat='Multiplier'/>
     </Group>
 
-  
-
-      <Button color="pink" fullWidth mt="md" radius="md">
-        Vote
-      </Button>
+     <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={props.title} issueDescription={props.description} issuePolicies={props.policies}/>
     </Card>
   );
 }
