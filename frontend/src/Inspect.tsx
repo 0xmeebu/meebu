@@ -11,7 +11,7 @@
 // under the License.
 
 import React, { useState } from "react";
-import { useSetChain } from "@web3-onboard/react";
+// import { useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
 // import { useRollups } from "./useRollups";
 
@@ -21,25 +21,16 @@ const config: any = configFile;
 
 export const Inspect: React.FC = () => {
     // const rollups = useRollups();
-    const [{ connectedChain }] = useSetChain();
+    // const [{ connectedChain }] = useSetChain();
     const inspectCall = async (str: string) => {
         let payload = str;
         if (hexData) {
             const uint8array = ethers.utils.arrayify(str);
             payload = new TextDecoder().decode(uint8array);
         }
-        if (!connectedChain){
-            return;
-        }
+       
         
-        let apiURL= ""
-
-        if(config[connectedChain.id]?.inspectAPIURL) {
-            apiURL = `${config[connectedChain.id].inspectAPIURL}/inspect`;
-        } else {
-            console.error(`No inspect interface defined for chain ${connectedChain.id}`);
-            return;
-        }
+        let apiURL= "http://localhost:8080"
         
         let fetchData: Promise<Response>;
         if (postData) {

@@ -4,6 +4,9 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { IconGripVertical } from '@tabler/icons-react';
 import { Policy } from '../Interfaces';
 
+import NoWalletButton from './NoWalletButton';
+import { useConnectWallet } from '@web3-onboard/react';
+
 interface RankedVoteProps {
         issueIndex: number;
         title: string;
@@ -14,6 +17,8 @@ interface RankedVoteProps {
   
 
 function RankedVote(props: RankedVoteProps) {
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+
   const form = useForm({
     initialValues: {
       orgAddress: props.orgAddress,
@@ -70,7 +75,8 @@ function RankedVote(props: RankedVoteProps) {
         </Droppable>
       </DragDropContext>
       <br />
-      <Button onClick={castVoteInput}> Cast Vote </Button>
+      {wallet  && <Button onClick={castVoteInput}> Cast Vote </Button>}
+      {!wallet && <NoWalletButton label="Cast Vote"></NoWalletButton>}
     </Box>
     </>
   );
