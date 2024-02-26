@@ -21,7 +21,6 @@ import (
 type Method string
 
 const (
-	CreateOrgMethod      Method = "CreateOrg"
 	CreateProposalMethod Method = "CreateProposal"
 	CastVoteMethod       Method = "CastVote"
 	CountVotesMethod     Method = "CountVotes"
@@ -35,11 +34,6 @@ type Message struct {
 //
 // Custom Advance Messages Definition
 //
-
-type CreateOrg struct {
-	NewOrgAddress common.Address
-	// AllowedTokens []common.Address
-}
 
 type CreateProposal struct {
 	Title             string
