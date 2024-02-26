@@ -2,7 +2,7 @@ import { Divider, Flex, ScrollArea, Text} from '@mantine/core';
 import ProposalCard from './ProposalCard';
 import { Proposal } from '../../Interfaces';
 import tallingSystemList  from '../../tallyingSystemList';
-
+import { IconPinned } from '@tabler/icons-react'
 
 interface ProposalsRowProps {
 proposals: Proposal[]
@@ -14,7 +14,7 @@ function ProposalsRow(props: ProposalsRowProps) {
  
   return (
     <>
-    <Divider my="lg" size='sm' color='pink' label={<Text color='pink' size='sm' fw={700}>{props.orgAddress}</Text>} labelPosition="left" />
+    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF'/>  <Text color='pink' size='sm' fw={700}>{props.orgAddress}</Text> </>} labelPosition="left" />
     <ScrollArea>
     <Flex gap="lg">
 { props.proposals.map((proposal, index) => (
