@@ -29,7 +29,13 @@ func NewMeebu(orgFactory common.Address) *MeebuState {
 }
 
 func (s *MeebuState) Voter(address common.Address) *VoterBalance {
-	return s.Voters[address]
+	voter, ok := s.Voters[address]
+	if !ok {
+		voter = NewVoter()
+		s.Voters[address] = voter
+	}
+
+	return voter
 }
 
 //
@@ -46,6 +52,19 @@ type VoterBalance struct {
 	Erc721Owned map[common.Address]bool
 }
 
+func (v *VoterBalance) Erc20Balance(address common.Address) *Erc20Balance {
+	balance, ok := v.Erc20Balances[address]
+	if !ok {
+		balance = &Erc20Balance{
+			Balance:  uint256.NewInt(0),
+			Deposits: make([]Erc20TokenDeposit, 0),
+		}
+		v.Erc20Balances[address] = balance
+	}
+
+	return balance
+}
+
 type Erc20Balance struct {
 	// Total balance
 	Balance *uint256.Int
@@ -59,8 +78,8 @@ type Erc20TokenDeposit struct {
 	Timestamp uint64
 }
 
-func NewVoter() VoterBalance {
-	return VoterBalance{make(map[common.Address]*Erc20Balance), make(map[common.Address]bool)}
+func NewVoter() *VoterBalance {
+	return &VoterBalance{make(map[common.Address]*Erc20Balance), make(map[common.Address]bool)}
 }
 
 func (vb *VoterBalance) DepositErc20Token(address common.Address, amount *uint256.Int) {
@@ -83,7 +102,7 @@ func (vb *VoterBalance) VotingPower(
 
 	for address, weight := range weights {
 		w := uint256.NewInt(weight.Weight)
-		balance := vb.Erc20Balances[address].Balance
+		balance := vb.Erc20Balance(address).Balance
 		w.Mul(w, balance)
 		power.Add(power, w)
 	}
