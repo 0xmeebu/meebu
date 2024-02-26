@@ -9,12 +9,12 @@ import { GraphQLProvider } from "./GraphQL";
 import configFile from "./config.json";
 
 import ActionMenu from "./Components/ActionsMenu";
-import ProposalsGrid from "./Components/ProposalsGrid";
+import ProposalsGrid from "./Components/ProposalDisplay/ProposalsRow";
 
 import '@mantine/core/styles.css'
 
 import { MantineProvider, createTheme, MantineColorsTuple, Button } from '@mantine/core';
-import FetchProposals from "./Components/FetchProposals";
+import FetchProposals from "./Components/ProposalDisplay/FetchProposals";
 
 
 const config: any = configFile;

@@ -1,8 +1,8 @@
 import { Card, Text, Badge, Button, Group} from '@mantine/core';
-import TokenWeights from './TokenWeights';
-import { TokenWeight } from "../Interfaces"
-import RankedVoteModal from './RankedVoteModal';
-import { Policy } from '../Interfaces';
+import TokenWeights from '../TokenWeights';
+import { TokenWeight } from "../../Interfaces"
+import RankedVoteModal from '../RankedVoteModal';
+import { Policy } from '../../Interfaces';
 
 
 interface ProposalCardProps {
@@ -19,10 +19,9 @@ interface ProposalCardProps {
 
 function ProposalCard(props: ProposalCardProps) {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" padding="lg" radius="md" withBorder miw={500}>
 
         <Group>
-          <Text size="sm" fs='italic'>{props.orgAddress}</Text>
           <Group justify="space-between" mt="md" mb="xs">
             <Text fw={700}>{props.title}</Text>
             <Badge color="pink">{props.tallyingSystem}</Badge>
