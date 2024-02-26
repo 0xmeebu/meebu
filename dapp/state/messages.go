@@ -53,7 +53,7 @@ type CreateProposal struct {
 type CastVote struct {
 	OrgAddress common.Address
 	Proposal   uint
-	Policy     []uint
+	Preference []uint
 }
 
 type CountVotes struct {
