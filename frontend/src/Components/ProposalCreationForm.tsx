@@ -14,6 +14,7 @@ function ProposalCreationForm() {
     });
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
+    
   const form = useForm({
     initialValues: {
       title: '',
@@ -25,8 +26,10 @@ function ProposalCreationForm() {
                     timeWeighted: false,
       }],
       ERC721Weights:  [{
-        address: '',
-        multiplier: 0
+                      address: '',
+                      multiplier: 0,
+                      timeWeighted: false,
+
 }],
       tallyingSystem: 0,
       ballot: [{
@@ -51,7 +54,9 @@ function ProposalCreationForm() {
   ];
 
 
-
+  const newProposalInput = () => {
+    console.log(JSON.stringify(form.values, null, 2))
+  }
 
 const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
     <Group key={index} mt="xs">
@@ -95,6 +100,10 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
         style={{ flex: 1 }}
         {...form.getInputProps(`ERC721Weights.${index}.weight`)}
       />
+       <Switch
+        onLabel="Time Weighted" offLabel="Time Weighted" size='lg' color='pink'
+        {...form.getInputProps(`ERC721Weights.${index}.timeWeighted`, { type: 'checkbox' })}
+      />
       <CloseButton  onClick={() => form.removeListItem('ERC721Weights', index)}>
       </CloseButton>
     </Group>
@@ -132,10 +141,8 @@ return (
 <>
 <Stepper active={active} color='pink'>
 <Stepper.Step label="First step" description="Profile settings">
-<h1>Create Proposal</h1>
-<h2>General Information</h2>
 <Autocomplete
-      label="Dao Address"
+      label="DAO Address"
       placeholder="Pick the DAO"
       data={daoList}
       {...form.getInputProps('orgAddress')}
@@ -144,10 +151,8 @@ return (
   <Textarea label="Description" placeholder="Detail your proposal" {...form.getInputProps('description')} />
   </Stepper.Step>
 
-  <Stepper.Step label="Second step" description="Personal information">
-  <h2>Governance Model</h2>
+  <Stepper.Step label="Voting system" description="Governance settings">
 
-  <h3>Voting System</h3>
   <NativeSelect
       label="Select Voting System"
       data={tallingSystemList}
@@ -208,8 +213,7 @@ return (
 
 </Stepper.Step>
 
-<Stepper.Step label="Final step" description="Social media">
-    <h2>Set Policies</h2>
+<Stepper.Step label="Set policies" description="Options to be voted">
 
     <Box maw={500} mx="auto">
       {policyFields.length > 0 ? (
@@ -236,7 +240,7 @@ return (
       </Box>
       </Stepper.Step>
         <Stepper.Completed>
-        Completed! Form values:
+        Review and Submit
           <Code block mt="xl">
             {JSON.stringify(form.values, null, 2)}
           </Code>
@@ -251,7 +255,7 @@ return (
           </Button>
         )}
         {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-        {active ==3 && <Button> Submit Proposal </Button>}
+        {active ==3 && <Button onClick={newProposalInput}> Submit Proposal </Button>}
       </Group>
 </>
   );

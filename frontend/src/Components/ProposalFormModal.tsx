@@ -7,7 +7,7 @@ function ProposalFormModal() {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Authentication">
+      <Modal opened={opened} onClose={close} title="New Proposal">
         <ProposalCreationForm />
       </Modal>
 
