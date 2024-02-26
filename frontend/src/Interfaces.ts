@@ -19,7 +19,7 @@ export interface TokenWeight {
     timeWeighted: boolean;
  }
 
-export interface ballot {
-    description: string;
-    vouchers: string;
+export interface Policy {
+  description: string;
+  vouchers: string;
   }
