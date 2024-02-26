@@ -13,7 +13,7 @@ function SideDrawer() {
 
   return (
     <>
-      <Drawer opened={opened} onClose={close} title="Wallet">
+      <Drawer opened={opened} onClose={close}>
         <Input dappAddress={dappAddress} />
       </Drawer>
 
