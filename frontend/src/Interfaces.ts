@@ -20,6 +20,7 @@ export interface TokenWeight {
  }
 
 export interface Policy {
+  index: number,
   description: string;
   vouchers: string;
   }

@@ -28,7 +28,8 @@ function RankedVote(props: RankedVoteProps) {
   });
 
   const castVoteInput = () => {
-    console.log(JSON.stringify(form.values, null, 2))
+    let preference = form.values.list.map( (item)=> item.index)
+    console.log(JSON.stringify({...form.values, preference: preference}, null, 2))
   }
 
   const fields = form.values.list.map((_, index) => (
