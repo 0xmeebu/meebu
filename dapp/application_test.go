@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -12,6 +13,7 @@ import (
 )
 
 var msgSender = common.HexToAddress("0xfafafafafafafafafafafafafafafafafafafafa")
+var orgFactory = common.HexToAddress("0xfafafafafafafafafafafafafafafafafafafafb")
 var erc20 = common.HexToAddress("0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A")
 var erc721 = common.HexToAddress("0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134B")
 
@@ -25,35 +27,29 @@ type MeebuSuite struct {
 }
 
 func (s *MeebuSuite) SetupTest() {
-	app := RootState(*state.NewMeebu(msgSender))
+	app := RootState(*state.NewMeebu(orgFactory))
 	s.tester = rollmelette.NewTester(&app)
 }
 
 func (s *MeebuSuite) TestMeebuOrg() {
-	createOrgInput := `
-	{
-		"Method":"CreateOrg",
-		"Body": {"NewOrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045","AllowedTokens":[]}
-	}`
-	result := s.tester.Advance(msgSender, []byte(createOrgInput))
+	result := createOrg(s.tester, common.HexToAddress("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"))
 	s.Nil(result.Err)
 
 	s.Len(result.Reports, 1)
-	s.Equal(result.Reports[0].Payload, []byte("CreateOrg message received"))
-
+	s.Equal(result.Reports[0].Payload, []byte(fmt.Sprintf("New org created with address `%s`", common.HexToAddress("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"))))
 	createProposalInput := `
-	{
-		"Method":"CreateProposal",
-		"Body": {
-			"Title":"title",
-			"Description":"description",
-			"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-			"Erc20Weights":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A","Weight":11,"TimeWeighted":false}],
-			"Erc721Multipliers":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134B","Multiplier":200}],
-			"TallyingSystem":0,
-			"Ballot":[{"Description":"bananas","Voucher":"0xdeadbeef"},{"Description":"bananas2","Voucher":"0xdeadbeefdeadbeef"}]
-		}
-	}`
+			{
+				"Method":"CreateProposal",
+				"Body": {
+					"Title":"title",
+					"Description":"description",
+					"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+					"Erc20Weights":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A","Weight":11,"TimeWeighted":false}],
+					"Erc721Multipliers":[{"Address":"0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134B","Multiplier":200}],
+					"TallyingSystem":0,
+					"Ballot":[{"Description":"bananas","Voucher":"0xdeadbeef"},{"Description":"bananas2","Voucher":"0xdeadbeefdeadbeef"}]
+				}
+			}`
 
 	result = s.tester.Advance(msgSender, []byte(createProposalInput))
 	s.Nil(result.Err)
@@ -68,14 +64,14 @@ func (s *MeebuSuite) TestMeebuOrg() {
 	s.Nil(result.Err)
 
 	castVoteInput := `
-	{
-		"Method":"CastVote",
-		"Body": {
-			"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-			"Proposal":0,
-			"Preference":[1,0]
-		}
-	}`
+		{
+			"Method":"CastVote",
+			"Body": {
+				"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+				"Proposal":0,
+				"Preference":[1,0]
+			}
+		}`
 	result = s.tester.Advance(msgSender, []byte(castVoteInput))
 	s.Nil(result.Err)
 
@@ -83,13 +79,13 @@ func (s *MeebuSuite) TestMeebuOrg() {
 	s.Equal(result.Reports[0].Payload, []byte("CastVote message received"))
 
 	countVotesInput := `
-	{
-		"Method":"CountVotes",
-		"Body": {
-			"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-			"Proposal":0
-		}
-	}`
+		{
+			"Method":"CountVotes",
+			"Body": {
+				"OrgAddress":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+				"Proposal":0
+			}
+		}`
 	result = s.tester.Advance(msgSender, []byte(countVotesInput))
 	s.Nil(result.Err)
 
@@ -123,4 +119,15 @@ func depositERC721(
 	portalPayload = append(portalPayload, tokenId.FillBytes(make([]byte, common.HashLength))...)
 	portalPayload = append(portalPayload, payload...)
 	return t.Advance(t.Book().ERC721Portal, portalPayload)
+}
+
+// DepositERC20 simulates an advance input from the ERC20 portal.
+func createOrg(
+	t *rollmelette.Tester,
+	orgAddress common.Address,
+) rollmelette.TestAdvanceResult {
+	orgPayload := make([]byte, 0, 1+common.AddressLength+2*common.HashLength)
+	orgPayload = append(orgPayload, orgAddress.Big().FillBytes(make([]byte, common.HashLength))[:]...)
+	orgPayload = append(orgPayload, orgAddress.Big().FillBytes(make([]byte, common.HashLength))[:]...)
+	return t.Advance(orgFactory, orgPayload)
 }

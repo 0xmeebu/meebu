@@ -14,7 +14,7 @@ import (
 	"dapp/tally"
 )
 
-var OrgFactory = common.HexToAddress("0xfafafafafafafafafafafafafafafafafafafafa")
+var OrgFactory = common.HexToAddress("0x7ef8E99980Da5bcEDcF7C10f41E55f759F6A174B")
 
 type RootState state.MeebuState
 
@@ -28,6 +28,7 @@ func (a *RootState) Advance(
 	deposit rollmelette.Deposit,
 	payload []byte,
 ) error {
+	// ERC20 deposits
 	if deposit != nil {
 		switch deposit := deposit.(type) {
 		case *rollmelette.ERC20Deposit:
@@ -44,36 +45,40 @@ func (a *RootState) Advance(
 		return nil
 	}
 
+	// ERC721 deposits
 	if metadata.MsgSender == rollmelette.NewAddressBook().ERC721Portal {
 		token, sender, err := parseErc721Deposit(payload)
 		if err != nil {
 			return err
 		}
+
 		voter := a.inner().Voter(*sender)
 		voter.DepositErc721Token(*token)
 		return nil
 	}
 
+	// DAO creation
+	if metadata.MsgSender == a.inner().OrgFactory {
+		newOrg, err := parseCreateOrg(payload)
+		if err != nil {
+			return err
+		}
+
+		org := &state.Org{Proposals: make([]*state.Proposal, 0)}
+		a.Orgs[*newOrg] = org
+
+		env.Report([]byte(fmt.Sprintf("New org created with address `%s`", newOrg)))
+
+		return nil
+	}
+
+	// Custom Messages
 	var message state.Message
 	if err := json.Unmarshal(payload, &message); err != nil {
 		return fmt.Errorf("failed to unmarshal input: %w", err)
 	}
 
 	switch message.Method {
-	case state.CreateOrgMethod:
-		var body state.CreateOrg
-		if err := json.Unmarshal(message.Body, &body); err != nil {
-			return fmt.Errorf("failed to unmarshal body: %w", err)
-		}
-		env.Report([]byte("CreateOrg message received"))
-
-		if metadata.MsgSender != a.OrgFactory {
-			return fmt.Errorf("CreateOrg msg.sender is not OrgFactory")
-		}
-
-		org := &state.Org{Proposals: make([]*state.Proposal, 0)}
-		a.Orgs[body.NewOrgAddress] = org
-
 	case state.CreateProposalMethod:
 		var body state.CreateProposal
 		if err := json.Unmarshal(message.Body, &body); err != nil {
@@ -196,6 +201,15 @@ func main() {
 	if err != nil {
 		slog.Error("application error", "error", err)
 	}
+}
+
+func parseCreateOrg(payload []byte) (*common.Address, error) {
+	if len(payload) < 32+32 {
+		return nil, fmt.Errorf("invalid createDao message size; got %v", len(payload))
+	}
+
+	daoAddress := common.BytesToAddress(payload[:32])
+	return &daoAddress, nil
 }
 
 func parseErc721Deposit(payload []byte) (*common.Address, *common.Address, error) {
