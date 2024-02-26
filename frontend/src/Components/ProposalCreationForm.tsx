@@ -2,8 +2,11 @@ import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import {NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
 import tokens from '../tokenList';
+import { useConnectWallet } from '@web3-onboard/react';
+import NoWalletButton from './NoWalletButton';
 
 function ProposalCreationForm() {
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => {
@@ -255,7 +258,9 @@ return (
           </Button>
         )}
         {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-        {active ==3 && <Button onClick={newProposalInput}> Submit Proposal </Button>}
+        {active == 3 && wallet && <Button onClick={newProposalInput}> Submit Proposal </Button>}
+        {active == 3 && !wallet && <NoWalletButton label="Submit Proposal"></NoWalletButton>}
+
       </Group>
 </>
   );
