@@ -24,6 +24,7 @@ const (
 	CreateOrgMethod      Method = "CreateOrg"
 	CreateProposalMethod Method = "CreateProposal"
 	CastVoteMethod       Method = "CastVote"
+	CountVotesMethod     Method = "CountVotes"
 )
 
 type Message struct {
