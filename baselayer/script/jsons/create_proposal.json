@@ -1,0 +1,12 @@
+{
+  "Method":"CreateProposal",
+  "Body": {
+    "Title":"title",
+    "Description":"description",
+    "OrgAddress":"0x61ab51be7c866a54b0b442c149d7715367743efd",
+    "Erc20Weights":[{"Address":"0xae7f61eCf06C65405560166b259C54031428A9C4","Weight":11,"TimeWeighted":false}],
+    "Erc721Multipliers":[{"Address":"0xef11D1c2aA48826D4c41e54ab82D1Ff5Ad8A64Ca","Multiplier":200}],
+    "TallyingSystem":0,
+    "Ballot":[{"Description":"bananas","Voucher":"0xdeadbeef"},{"Description":"bananas2","Voucher":"0xdeadbeefdeadbeef"}]
+  }
+}
