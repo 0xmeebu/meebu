@@ -188,6 +188,8 @@ func (a *RootState) Advance(
 }
 
 func (a *RootState) Inspect(env rollmelette.EnvInspector, payload []byte) error {
+	j, _ := json.Marshal(a.inner())
+	env.Report([]byte(j))
 	return nil
 }
 
