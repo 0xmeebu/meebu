@@ -22,7 +22,7 @@ const config: any = configFile;
 const injected: any = injectedModule();
 init({
     wallets: [injected],
-    chains: Object.entries(config).map(([k, v]: [string, any], i) => ({id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl})),
+    chains: Object.entries(config).map(([k, v]: [string, any], i) => ({ id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl })),
     appMetadata: {
         name: "Meebu",
         icon: "<svg><svg/>",
@@ -47,31 +47,32 @@ const App: FC = () => {
         '#e400e4',
         '#cb00cb',
         '#b100b2'
-      ];
-      
-      const theme = createTheme({
+    ];
+
+    const theme = createTheme({
         colors: {
-          pink,
+            pink,
         },
         components: {
             Button: Button.extend({
-              defaultProps: {
-                color: 'pink',
-                variant: 'light',
-              }
-            })}
-      });
+                defaultProps: {
+                    color: 'pink',
+                    variant: 'light',
+                }
+            })
+        }
+    });
 
     return (
         <div>
             <MantineProvider theme={theme}>
-            <GraphQLProvider>
-            <ActionMenu />    
-             <FetchProposals />
-            </GraphQLProvider>
+                <GraphQLProvider>
+                    <ActionMenu />
+                    <FetchProposals />
+                </GraphQLProvider>
             </MantineProvider>
         </div>
-        
+
     );
 };
 
