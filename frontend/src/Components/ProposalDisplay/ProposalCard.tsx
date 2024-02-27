@@ -1,44 +1,40 @@
-import { Card, Text, Badge, Button, Group} from '@mantine/core';
+import { Card, Text, Badge, Button, Group } from '@mantine/core';
 import TokenWeights from '../TokenWeights';
-import { TokenWeight } from "../../Interfaces"
 import RankedVoteModal from '../RankedVoteModal';
-import { Policy } from '../../Interfaces';
+import { UseMeebuState } from "../../Hooks/UseMeebuState";
 
 
 interface ProposalCardProps {
   index: number;
-  title: string;
-  description: string;
   orgAddress: string;
-  erc20Weights: TokenWeight[];
-  erc721Multipliers: TokenWeight[];
-  tallyingSystem: string;
-  policies: Policy[];
 }
 
 
 function ProposalCard(props: ProposalCardProps) {
+  const { data, isPending, error } = UseMeebuState("http://localhost:8080/inspect");
+  const proposal = data.Orgs[props.orgAddress].Proposals[props.index]
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder miw={500}>
 
-        <Group>
-          <Group justify="space-between" mt="md" mb="xs">
-            <Text fw={700}>{props.title}</Text>
-            <Badge color="pink">{props.tallyingSystem}</Badge>
-          </Group>
+      <Group>
+        <Group justify="space-between" mt="md" mb="xs">
+          <Text fw={700}>{proposal.title}</Text>
+          <Badge color="pink">{proposal.tallyingSystem}</Badge>
         </Group>
+      </Group>
 
 
       <Text size="sm" c="dimmed">
-        {props.description}
+        {proposal.description}
       </Text>
 
       <Group gap="sm">
-      <TokenWeights weights={props.erc20Weights} cat='Weight'/>
-      <TokenWeights weights={props.erc721Multipliers} cat='Multiplier'/>
-    </Group>
+        <TokenWeights weights={proposal.Erc20Weights} cat='Weight' />
+        <TokenWeights weights={proposal.Erc721Multipliers} cat='Multiplier' />
+      </Group>
 
-     <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={props.title} issueDescription={props.description} issuePolicies={props.policies}/>
+      <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.title} issueDescription={proposal.description} issuePolicies={proposal.policies} />
     </Card>
   );
 }

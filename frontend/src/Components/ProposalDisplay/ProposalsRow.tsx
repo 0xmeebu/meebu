@@ -1,27 +1,36 @@
-import { Divider, Flex, ScrollArea, Text} from '@mantine/core';
+import { Divider, Flex, ScrollArea, Text } from '@mantine/core';
 import ProposalCard from './ProposalCard';
-import { Proposal } from '../../Interfaces';
-import tallingSystemList  from '../../tallyingSystemList';
+import { UseMeebuState } from "../../Hooks/UseMeebuState";
 import { IconPinned } from '@tabler/icons-react'
 
 interface ProposalsRowProps {
-proposals: Proposal[]
-orgAddress: string
-
+  orgAddress: string
 }
 
 function ProposalsRow(props: ProposalsRowProps) {
- 
+  const { data, isPending, error } = UseMeebuState("http://localhost:8080/inspect");
+  const proposals = data.Orgs[props.orgAddress].Proposals
+
   return (
     <>
-    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF'/>  <Text color='pink' size='sm' fw={700}>{props.orgAddress}</Text> </>} labelPosition="left" />
-    <ScrollArea>
-    <Flex gap="lg">
-{ props.proposals.map((proposal, index) => (
-     <ProposalCard  index={index} title={proposal.title} orgAddress={proposal.orgAddress} tallyingSystem={tallingSystemList[proposal.tallyingSystem].label} description={proposal.description} erc20Weights={proposal.ERC20Weights} erc721Multipliers={proposal.ERC20Weights} policies={proposal.policies}></ProposalCard>
-           ))}
-    </Flex>
-    </ScrollArea>
+      <Divider
+        my="lg"
+        size='sm'
+        color='pink'
+        label={<>
+          <IconPinned color='#FF08FF' />
+          <Text c='pink' size='sm' fw={700}>
+            {props.orgAddress}</Text> </>
+        }
+        labelPosition="left"
+      />
+      <ScrollArea>
+        <Flex gap="lg">
+          {proposals.map((proposal, index) => (
+            <ProposalCard index={index} orgAddress={proposal.orgAddress}></ProposalCard>
+          ))}
+        </Flex>
+      </ScrollArea>
     </>
   );
 }
