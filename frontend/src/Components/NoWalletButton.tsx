@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { useConnectWallet } from "@web3-onboard/react";
 
 
@@ -14,7 +14,7 @@ interface NoWalletButtonProps {
             connect()
         }
     >
-        {connecting ? "connecting wallet" : props.label}
+        {connecting ?  <Loader type="dots"  size={22} color="pink"/> : props.label}
     </Button>
     );
   }

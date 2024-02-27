@@ -6,7 +6,7 @@ function ActionMenu() {
   return (
     <Group justify="flex-start" gap="sm">
       <SideDrawer/>
-      <Button>Register DAO</Button>
+      <Button>Create Community</Button>
       <ProposalFormModal />
 
     </Group>
