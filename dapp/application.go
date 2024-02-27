@@ -54,6 +54,8 @@ func (a *RootState) Advance(
 
 		voter := a.inner().Voter(*sender)
 		voter.DepositErc721Token(*token)
+
+		env.Report([]byte(fmt.Sprintf("ERC721 `%s` deposited by `%s`", token, sender)))
 		return nil
 	}
 

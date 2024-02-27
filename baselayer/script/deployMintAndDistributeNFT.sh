@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Deploy and mint Meebu NFT for two accounts
 echo "Deploying NFT and Mintind id0 and id1 to account index 0 and 1"
 echo "Deploying using anvil id(7)"

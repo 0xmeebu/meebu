@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 # Give approval for ERC20 Portal to spend tokens on behalf of first Anvil acc
 cast send 0xae7f61eCf06C65405560166b259C54031428A9C4 0x095ea7b30000000000000000000000009C21AEb2093C32DDbC53eEF24B873BDCd1aDa1DB00000000000000000000000000000000000000000000000ffffffffffff0ffff --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
