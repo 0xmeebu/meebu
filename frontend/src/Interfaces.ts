@@ -35,3 +35,12 @@ export interface Policy {
         policies: Policy[];
 
       }
+
+  export interface Org {
+        proposals: Proposal
+  }
+
+  type orgMap = {[key: string]: Org}
+  export interface MeebuState {
+        orgs: orgMap
+  }
