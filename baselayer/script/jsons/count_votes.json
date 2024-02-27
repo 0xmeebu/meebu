@@ -1,0 +1,8 @@
+{
+	"Method":"CountVotes",
+	"Body": {
+		"OrgAddress":"0x61Ab51bE7C866a54B0B442c149d7715367743EfD",
+		"Proposal":0
+	}
+}
+
