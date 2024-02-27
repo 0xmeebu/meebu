@@ -9,12 +9,11 @@ import { GraphQLProvider } from "./GraphQL";
 import configFile from "./config.json";
 
 import ActionMenu from "./Components/ActionsMenu";
-import ProposalsGrid from "./Components/ProposalDisplay/ProposalsRow";
 
 import '@mantine/core/styles.css'
 
 import { MantineProvider, createTheme, MantineColorsTuple, Button } from '@mantine/core';
-import FetchProposals from "./Components/ProposalDisplay/FetchProposals";
+import ProposalsDisplay from "./Components/ProposalDisplay/ProposalsDisplay";
 
 
 const config: any = configFile;
@@ -68,7 +67,7 @@ const App: FC = () => {
             <MantineProvider theme={theme}>
                 <GraphQLProvider>
                     <ActionMenu />
-                    <FetchProposals />
+                    <ProposalsDisplay />
                 </GraphQLProvider>
             </MantineProvider>
         </div>
