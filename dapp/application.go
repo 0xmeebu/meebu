@@ -91,17 +91,20 @@ func (a *RootState) Advance(
 			return fmt.Errorf("Org `%s` doesn't exist", body.OrgAddress)
 		}
 
-		weights := make(map[common.Address]state.Erc20Weight)
+		weights := make(map[common.Address]state.TokenWeight)
 		for _, w := range body.Erc20Weights {
-			weights[w.Address] = state.Erc20Weight{
+			weights[w.Address] = state.TokenWeight{
 				Weight:       w.Weight,
 				TimeWeighted: w.TimeWeighted,
 			}
 		}
 
-		multipliers := make(map[common.Address]uint64)
+		multipliers := make(map[common.Address]state.TokenWeight)
 		for _, m := range body.Erc721Multipliers {
-			multipliers[m.Address] = m.Multiplier
+			multipliers[m.Address] = state.TokenWeight{
+				Weight:       m.Multiplier,
+				TimeWeighted: false,
+			}
 		}
 
 		proposal := state.Proposal{

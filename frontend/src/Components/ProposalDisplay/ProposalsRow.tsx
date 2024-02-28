@@ -2,6 +2,7 @@ import { Divider, Flex, ScrollArea, Text } from '@mantine/core';
 import ProposalCard from './ProposalCard';
 import { IconPinned } from '@tabler/icons-react'
 import { MeebuState } from '../../Interfaces';
+import DaoDivider from './DaoDivider';
 
 interface ProposalsRowProps {
   state: MeebuState;
@@ -9,25 +10,25 @@ interface ProposalsRowProps {
 }
 
 function ProposalsRow(props: ProposalsRowProps) {
-  const proposals = props.state.Orgs[props.orgAddress].Proposals
+  const org = props.state.Orgs[props.orgAddress]
+  if (!org) {
+    return (
+      <div>
+        Loading...
+      </div>
+    );
+  }
+
+  const proposals = org.Proposals
+
 
   return (
     <>
-      <Divider
-        my="lg"
-        size='sm'
-        color='pink'
-        label={<>
-          <IconPinned color='#FF08FF' />
-          <Text c='pink' size='sm' fw={700}>
-            {props.orgAddress}</Text> </>
-        }
-        labelPosition="left"
-      />
+      <DaoDivider label={props.orgAddress} />
       <ScrollArea>
         <Flex gap="lg">
-          {proposals.map((proposal, index) => (
-            <ProposalCard state={props.state} index={index} orgAddress={proposal.orgAddress}></ProposalCard>
+          {proposals.map((_proposal, index) => (
+            <ProposalCard state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
           ))}
         </Flex>
       </ScrollArea>
