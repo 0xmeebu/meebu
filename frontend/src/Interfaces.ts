@@ -19,9 +19,13 @@ export interface TokenInfo {
 }
 
 export interface Policy {
-  index: number,
-  description: string;
-  vouchers: string;
+  Description: string;
+  Vouchers: string;
+}
+
+export interface Vote {
+  policy: Policy;
+  index: number;
 }
 
 export interface Proposal {
@@ -31,7 +35,7 @@ export interface Proposal {
   Erc20Weights: { [key: string]: TokenWeight };
   Erc721Multipliers: { [key: string]: TokenWeight };
   TallyingSystem: number;
-  Policies: Policy[];
+  Ballot: Policy[];
 }
 
 export interface VoterBalance {

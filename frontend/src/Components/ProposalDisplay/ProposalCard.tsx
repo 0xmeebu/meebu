@@ -22,7 +22,13 @@ function ProposalCard(props: ProposalCardProps) {
   }
 
   const proposal = org.Proposals[props.index]
-
+  if (!proposal) {
+    return (
+      <div>
+        Loading...
+      </div>
+    );
+  }
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder miw={500}>
 
@@ -43,7 +49,7 @@ function ProposalCard(props: ProposalCardProps) {
         <TokenWeights weights={new Map(Object.entries(proposal.Erc721Multipliers))} cat='Multiplier' />
       </Group>
 
-      <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issuePolicies={proposal.Policies} />
+      <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issueBallot={proposal.Ballot} />
     </Card>
   );
 }
