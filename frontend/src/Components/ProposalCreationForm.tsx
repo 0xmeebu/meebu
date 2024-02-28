@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
-import {NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
+import { NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
 import tokens from '../tokenList';
 import { useConnectWallet } from '@web3-onboard/react';
 import NoWalletButton from './NoWalletButton';
@@ -15,29 +15,29 @@ function ProposalCreationForm() {
       }
       return current < 3 ? current + 1 : current;
     });
-    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
-    
+
   const form = useForm({
     initialValues: {
       title: '',
       description: '',
       orgAddress: '',
       ERC20Weights: [{
-                    address: '',
-                    weight: 0,
-                    timeWeighted: false,
+        address: '',
+        weight: 0,
+        timeWeighted: false,
       }],
-      ERC721Weights:  [{
-                      address: '',
-                      multiplier: 0,
-                      timeWeighted: false,
+      ERC721Weights: [{
+        address: '',
+        multiplier: 0,
+        timeWeighted: false,
 
-}],
+      }],
       tallyingSystem: 0,
       ballot: [{
         description: '',
-        vouchers: ''
+        voucher: ''
       }]
     },
   });
@@ -50,22 +50,55 @@ function ProposalCreationForm() {
     "0x1e857b4985FC9a6e5d9b9B2C2d8E7747Df27b020",
     "0x4b4a439D53395D74D105A2e16f1d8f0D90b6bC56"
   ];
-  
+
   const tallingSystemList = [
-    { label: 'Ranked Voting', value:  '0'},
+    { label: 'Ranked Voting', value: '0' },
     { label: 'Simple Majority', value: '1', disabled: true },
   ];
 
 
   const newProposalInput = () => {
+    let input = {
+      Method: "CreateProposal",
+      Body: {
+        Title: form.values.title,
+        Description: form.values.description,
+        OrgAddress: form.values.orgAddress,
+        Erc20Weights: form.values.ERC20Weights.map(f => {
+          return {
+            Address: f.address,
+            Weight: f.weight,
+            TimeWeighted: false,
+          }
+        }),
+        Erc721Multipliers: form.values.ERC721Weights.map(f => {
+          return {
+            Address: f.address,
+            Multiplier: f.multiplier + 100,
+            TimeWeighted: false,
+          }
+        }),
+        TallyingSystem: tallingSystemList[form.values.tallyingSystem].value,
+        Ballot: form.values.ballot.map(p => {
+          return {
+            Voucher: p.voucher,
+            Description: p.description
+          }
+        })
+      }
+    }
+
+    let _payload = JSON.stringify(input)
+
     console.log(JSON.stringify(form.values, null, 2))
+    console.log(JSON.stringify(input, null, 2))
   }
 
-const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
+  const ERC20Fields = form.values.ERC20Weights.map((_item, index) => (
     <Group key={index} mt="xs">
       <Select
-        data = {tokens}
-        searchable 
+        data={tokens}
+        searchable
         placeholder="Token Symbol"
         withAsterisk
         style={{ flex: 1 }}
@@ -88,9 +121,9 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
 
   const ERC721Fields = form.values.ERC721Weights.map((item, index) => (
     <Group key={index} mt="xs">
-    <Select
-        data = {tokens}
-        searchable 
+      <Select
+        data={tokens}
+        searchable
         placeholder="Token Symbol"
         withAsterisk
         style={{ flex: 1 }}
@@ -101,153 +134,153 @@ const ERC20Fields = form.values.ERC20Weights.map((item, index) => (
         suffix="%"
         withAsterisk
         style={{ flex: 1 }}
-        {...form.getInputProps(`ERC721Weights.${index}.weight`)}
+        {...form.getInputProps(`ERC721Weights.${index}.multiplier`)}
       />
-       <Switch
+      <Switch
         onLabel="Time Weighted" offLabel="Time Weighted" size='lg' color='pink'
         {...form.getInputProps(`ERC721Weights.${index}.timeWeighted`, { type: 'checkbox' })}
       />
-      <CloseButton  onClick={() => form.removeListItem('ERC721Weights', index)}>
+      <CloseButton onClick={() => form.removeListItem('ERC721Weights', index)}>
       </CloseButton>
     </Group>
   ));
 
   const policyFields =
-    
+
     form.values.ballot.map((item, index) => (
-    <Group key={index} mt="xs">
-      <TextInput
-        placeholder="Policy Statement"
-        withAsterisk
-        style={{ flex: 1 }}
-        {...form.getInputProps(`ballot.${index}.description`)}
-      />
-       <JsonInput
-      label="Base layer side efects"
-      placeholder="[{'0x0', 'transfer(address, uint)', [0x1, 1000]}]"
-      validationError="Invalid JSON"
-      formatOnBlur
-      autosize
-      minRows={4}
-      {...form.getInputProps(`ballot.${index}.vouchers`)}
-    />
-      <CloseButton  onClick={() => form.removeListItem('ballot', index)}>
-      </CloseButton>
-    </Group>
-  ));
-    
-
-
-
-  
-return (
-<>
-<Stepper active={active} color='pink'>
-<Stepper.Step label="First step" description="Profile settings">
-<Autocomplete
-      label="DAO Address"
-      placeholder="Pick the DAO"
-      data={daoList}
-      {...form.getInputProps('orgAddress')}
-    />
-  <TextInput label="Title" placeholder="what is the proposal deciding about" {...form.getInputProps('title')} />
-  <Textarea label="Description" placeholder="Detail your proposal" {...form.getInputProps('description')} />
-  </Stepper.Step>
-
-  <Stepper.Step label="Voting system" description="Governance settings">
-
-  <NativeSelect
-      label="Select Voting System"
-      data={tallingSystemList}
-    />
-
-<h3>ERC20 Voting Tokens</h3>
-<Box maw={500} mx="auto">
-      {ERC20Fields.length > 0 ? (
-        <Group mb="xs">
-          
-        </Group>
-      ) : (
-        <Text c="dimmed">
-          No one here...
-        </Text>
-      )}
-
-      {ERC20Fields}
-
-      <Group justify="flex-start" mt="md">
-        <Button color='pink'
-          onClick={() =>
-            form.insertListItem('ERC20Weights', { address: '', weight: 0, timeWeighted: false})
-          }
-        >
-          Add Token
-        </Button>
+      <Group key={index} mt="xs">
+        <TextInput
+          placeholder="Policy Statement"
+          withAsterisk
+          style={{ flex: 1 }}
+          {...form.getInputProps(`ballot.${index}.description`)}
+        />
+        <JsonInput
+          label="Base layer side efects"
+          placeholder="[{'0x0', 'transfer(address, uint)', [0x1, 1000]}]"
+          validationError="Invalid JSON"
+          formatOnBlur
+          autosize
+          minRows={4}
+          {...form.getInputProps(`ballot.${index}.voucher`)}
+        />
+        <CloseButton onClick={() => form.removeListItem('ballot', index)}>
+        </CloseButton>
       </Group>
+    ));
 
-    </Box>
 
 
-    <h3>NFT Multipliers</h3>
 
-    <Box maw={500} mx="auto">
-      {ERC721Fields.length > 0 ? (
-        <Group mb="xs">
-          
-        </Group>
-      ) : (
-        <Text c="dimmed">
-          No one here...
-        </Text>
-      )}
 
-      {ERC721Fields}
+  return (
+    <>
+      <Stepper active={active} color='pink'>
+        <Stepper.Step label="First step" description="Profile settings">
+          <Autocomplete
+            label="DAO Address"
+            placeholder="Pick the DAO"
+            data={daoList}
+            {...form.getInputProps('orgAddress')}
+          />
+          <TextInput label="Title" placeholder="what is the proposal deciding about" {...form.getInputProps('title')} />
+          <Textarea label="Description" placeholder="Detail your proposal" {...form.getInputProps('description')} />
+        </Stepper.Step>
 
-      <Group justify="flex-start" mt="md">
-        <Button color='pink'
-          onClick={() =>
-            form.insertListItem('ERC721Weights', { address: '', weight: 0})
-          }
-        >
-          Add NFT
-        </Button>
-      </Group>      
-</Box>
+        <Stepper.Step label="Voting system" description="Governance settings">
 
-</Stepper.Step>
+          <NativeSelect
+            label="Select Voting System"
+            data={tallingSystemList}
+          />
 
-<Stepper.Step label="Set policies" description="Options to be voted">
+          <h3>ERC20 Voting Tokens</h3>
+          <Box maw={500} mx="auto">
+            {ERC20Fields.length > 0 ? (
+              <Group mb="xs">
 
-    <Box maw={500} mx="auto">
-      {policyFields.length > 0 ? (
-        <Group mb="xs">
+              </Group>
+            ) : (
+              <Text c="dimmed">
+                No one here...
+              </Text>
+            )}
 
-        </Group>
-      ) : (
-        <Text c="dimmed">
-          No one here...
-        </Text>
-      )}
+            {ERC20Fields}
 
-      {policyFields}
+            <Group justify="flex-start" mt="md">
+              <Button color='pink'
+                onClick={() =>
+                  form.insertListItem('ERC20Weights', { address: '', weight: 0, timeWeighted: false })
+                }
+              >
+                Add Token
+              </Button>
+            </Group>
 
-      <Group justify="flex-start" mt="md">
-      <Button color='pink'
-          onClick={() =>
-            form.insertListItem('ballot', { description: '', vouchers: ''})
-          }
-        >
-          Add Policy
-        </Button>
-      </Group>      
-      </Box>
-      </Stepper.Step>
+          </Box>
+
+
+          <h3>NFT Multipliers</h3>
+
+          <Box maw={500} mx="auto">
+            {ERC721Fields.length > 0 ? (
+              <Group mb="xs">
+
+              </Group>
+            ) : (
+              <Text c="dimmed">
+                No one here...
+              </Text>
+            )}
+
+            {ERC721Fields}
+
+            <Group justify="flex-start" mt="md">
+              <Button color='pink'
+                onClick={() =>
+                  form.insertListItem('ERC721Weights', { address: '', weight: 0 })
+                }
+              >
+                Add NFT
+              </Button>
+            </Group>
+          </Box>
+
+        </Stepper.Step>
+
+        <Stepper.Step label="Set policies" description="Options to be voted">
+
+          <Box maw={500} mx="auto">
+            {policyFields.length > 0 ? (
+              <Group mb="xs">
+
+              </Group>
+            ) : (
+              <Text c="dimmed">
+                No one here...
+              </Text>
+            )}
+
+            {policyFields}
+
+            <Group justify="flex-start" mt="md">
+              <Button color='pink'
+                onClick={() =>
+                  form.insertListItem('ballot', { description: '', voucher: '' })
+                }
+              >
+                Add Policy
+              </Button>
+            </Group>
+          </Box>
+        </Stepper.Step>
         <Stepper.Completed>
-        Review and Submit
+          Review and Submit
           <Code block mt="xl">
             {JSON.stringify(form.values, null, 2)}
           </Code>
-          
+
         </Stepper.Completed>
       </Stepper>
 
@@ -262,7 +295,7 @@ return (
         {active == 3 && !wallet && <NoWalletButton label="Submit Proposal"></NoWalletButton>}
 
       </Group>
-</>
+    </>
   );
 }
 

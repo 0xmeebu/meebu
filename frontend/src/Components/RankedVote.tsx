@@ -29,7 +29,18 @@ function RankedVote(props: RankedVoteProps) {
 
   const castVoteInput = () => {
     let preference = form.values.list.map((item) => item.index)
+    let input = {
+      Method: "CastVote",
+      Body: {
+        OrgAddress: props.orgAddress,
+        Proposal: props.issueIndex,
+        Preference: preference
+      }
+    }
+    let _payload = JSON.stringify(input)
+
     console.log(JSON.stringify({ ...form.values, preference: preference }, null, 2))
+    console.log("payload", JSON.stringify(input, null, 2))
   }
 
   const fields = form.values.list.map((_, index) => (
@@ -39,7 +50,7 @@ function RankedVote(props: RankedVoteProps) {
           <Center {...provided.dragHandleProps}>
             <IconGripVertical color='#FF08FF' size="1.2rem" />
           </Center>
-          <TextInput disabled {...form.getInputProps(`list.${index}.description`)} />
+          <TextInput disabled {...form.getInputProps(`list.${index}.policy.Description`)} />
         </Group>
       )}
     </Draggable>
