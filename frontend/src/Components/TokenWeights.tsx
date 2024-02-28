@@ -1,4 +1,4 @@
-import tokens from "../tokenList";
+import tokens from "../Data/tokenList";
 import { Avatar, AvatarGroup, HoverCard } from '@mantine/core';
 import { TokenWeight, TokenList, TokenInfo } from "../Interfaces"
 import TokenTable from "./Table";

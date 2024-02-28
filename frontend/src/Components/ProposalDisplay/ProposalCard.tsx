@@ -2,7 +2,7 @@ import { Card, Text, Badge, Group } from '@mantine/core';
 import TokenWeights from '../TokenWeights';
 import RankedVoteModal from '../RankedVoteModal';
 import { MeebuState } from '../../Interfaces';
-import tallingSystemList from '../../tallyingSystemList';
+import tallingSystemList from '../../Data/tallyingSystemList';
 
 interface ProposalCardProps {
   state: MeebuState;
