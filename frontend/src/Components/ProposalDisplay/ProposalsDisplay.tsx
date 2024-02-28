@@ -2,15 +2,23 @@ import ProposalsRow from './ProposalsRow';
 import { UseMeebuState } from "../../Hooks/UseMeebuState";
 
 function ProposalsDisplay() {
-    const { data, isPending, error } = UseMeebuState("http://localhost:8080/inspect");
+  const { state, updating, error } = UseMeebuState();
 
+  if (state === null) {
     return (
-        <div>
-            {Object.entries(data.Orgs).map(([string, _org]) => (
-                <ProposalsRow orgAddress={string} />
-            ))}
-        </div>
+      <div>
+        Loading...
+      </div>
     );
+  }
+
+  return (
+    <div>
+      {Object.entries(state.Orgs).map(([string, _org]) => (
+        < ProposalsRow state={state} orgAddress={string} />
+      ))}
+    </div>
+  );
 }
 
 export default ProposalsDisplay
