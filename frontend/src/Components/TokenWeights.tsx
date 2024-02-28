@@ -35,7 +35,6 @@ function mergeObjects(tokens: Map<string, TokenWeight>, listB: TokenList[]): Map
 
 function TokenWeights(props: TokenWeightsProps) {
   let votingTokens = mergeObjects(props.weights, tokens);
-  console.log("vv", votingTokens)
 
   return (
     <HoverCard width={280} shadow="md">

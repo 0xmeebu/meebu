@@ -8,7 +8,7 @@ interface RankedVoteModalProps {
   issueTitle: string;
   issueDescription: string;
   issueOrgAddress: string;
-  issuePolicies: Policy[]
+  issueBallot: Policy[]
 }
 
 function RankedVoteModal(props: RankedVoteModalProps) {
@@ -17,7 +17,7 @@ function RankedVoteModal(props: RankedVoteModalProps) {
   return (
     <>
       <Modal size='500' opened={opened} onClose={close} title="Ranked Vote">
-        <RankedVote policies={props.issuePolicies} issueIndex={props.issueIndex} title={props.issueTitle} description={props.issueDescription} orgAddress={props.issueOrgAddress} />
+        <RankedVote ballot={props.issueBallot} issueIndex={props.issueIndex} title={props.issueTitle} description={props.issueDescription} orgAddress={props.issueOrgAddress} />
       </Modal>
 
       <Button fullWidth mt="md" radius="md" onClick={open}>Vote</Button>
