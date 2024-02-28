@@ -96,8 +96,8 @@ func (vb *VoterBalance) DepositErc721Token(address common.Address) {
 }
 
 func (vb *VoterBalance) VotingPower(
-	weights map[common.Address]Erc20Weight,
-	multipliers map[common.Address]uint64) *uint256.Int {
+	weights map[common.Address]TokenWeight,
+	multipliers map[common.Address]TokenWeight) *uint256.Int {
 	power := uint256.NewInt(0)
 
 	for address, weight := range weights {
@@ -109,7 +109,7 @@ func (vb *VoterBalance) VotingPower(
 
 	for address, multiplier := range multipliers {
 		if vb.Erc721Owned[address] {
-			m := uint256.NewInt(multiplier)
+			m := uint256.NewInt(multiplier.Weight)
 			power.Mul(power, m)
 			power.Div(power, uint256.NewInt(100))
 		}
@@ -138,8 +138,8 @@ type Proposal struct {
 	Description string
 
 	// Config
-	Erc20Weights      map[common.Address]Erc20Weight
-	Erc721Multipliers map[common.Address]uint64
+	Erc20Weights      map[common.Address]TokenWeight
+	Erc721Multipliers map[common.Address]TokenWeight
 	Ballot            []Policy
 	TallyingSystem    TallyingSystemId
 
@@ -149,7 +149,7 @@ type Proposal struct {
 	HasVoted map[common.Address]bool
 }
 
-type Erc20Weight struct {
+type TokenWeight struct {
 	Weight       uint64
 	TimeWeighted bool
 }

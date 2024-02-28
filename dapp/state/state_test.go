@@ -21,13 +21,13 @@ func TestVotingPower(t *testing.T) {
 	vb.DepositErc721Token(Erc721Address1)
 	vb.DepositErc721Token(Erc721Address2)
 
-	weights := make(map[common.Address]Erc20Weight)
-	weights[Erc20Address1] = Erc20Weight{2, false}
-	weights[Erc20Address2] = Erc20Weight{1, false}
+	weights := make(map[common.Address]TokenWeight)
+	weights[Erc20Address1] = TokenWeight{2, false}
+	weights[Erc20Address2] = TokenWeight{1, false}
 
-	multipliers := make(map[common.Address]uint64)
-	multipliers[Erc721Address1] = uint64(100)
-	multipliers[Erc721Address1] = uint64(150)
+	multipliers := make(map[common.Address]TokenWeight)
+	multipliers[Erc721Address1] = TokenWeight{100, false}
+	multipliers[Erc721Address1] = TokenWeight{150, false}
 
 	assert.Equal(t, vb.VotingPower(weights, multipliers), uint256.NewInt(600))
 }

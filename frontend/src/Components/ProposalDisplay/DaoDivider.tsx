@@ -1,13 +1,13 @@
-import { Divider, Text} from '@mantine/core';
+import { Divider, Text } from '@mantine/core';
 import { IconPinned } from '@tabler/icons-react'
 
 interface DaoDividerProps {
-    label: string
-    }
+  label: string
+}
 
 function DaoDivider(props: DaoDividerProps) {
   return (
-    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF'/>  <Text color='pink' size='sm' fw={700}>{props.label}</Text> </>} labelPosition="left" />
+    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF' />  <Text c='pink' size='sm' fw={700}>{props.label}</Text> </>} labelPosition="left" />
 
   );
 }
