@@ -1,18 +1,17 @@
 import { Card, Text, Badge, Button, Group } from '@mantine/core';
 import TokenWeights from '../TokenWeights';
 import RankedVoteModal from '../RankedVoteModal';
-import { UseMeebuState } from "../../Hooks/UseMeebuState";
-
+import { MeebuState } from '../../Interfaces';
 
 interface ProposalCardProps {
+  state: MeebuState;
+
   index: number;
   orgAddress: string;
 }
 
-
 function ProposalCard(props: ProposalCardProps) {
-  const { data, isPending, error } = UseMeebuState("http://localhost:8080/inspect");
-  const proposal = data.Orgs[props.orgAddress].Proposals[props.index]
+  const proposal = props.state.Orgs[props.orgAddress].Proposals[props.index]
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder miw={500}>

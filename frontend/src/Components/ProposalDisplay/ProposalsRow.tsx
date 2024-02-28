@@ -1,15 +1,15 @@
 import { Divider, Flex, ScrollArea, Text } from '@mantine/core';
 import ProposalCard from './ProposalCard';
-import { UseMeebuState } from "../../Hooks/UseMeebuState";
 import { IconPinned } from '@tabler/icons-react'
+import { MeebuState } from '../../Interfaces';
 
 interface ProposalsRowProps {
+  state: MeebuState;
   orgAddress: string
 }
 
 function ProposalsRow(props: ProposalsRowProps) {
-  const { data, isPending, error } = UseMeebuState("http://localhost:8080/inspect");
-  const proposals = data.Orgs[props.orgAddress].Proposals
+  const proposals = props.state.Orgs[props.orgAddress].Proposals
 
   return (
     <>
@@ -27,7 +27,7 @@ function ProposalsRow(props: ProposalsRowProps) {
       <ScrollArea>
         <Flex gap="lg">
           {proposals.map((proposal, index) => (
-            <ProposalCard index={index} orgAddress={proposal.orgAddress}></ProposalCard>
+            <ProposalCard state={props.state} index={index} orgAddress={proposal.orgAddress}></ProposalCard>
           ))}
         </Flex>
       </ScrollArea>
