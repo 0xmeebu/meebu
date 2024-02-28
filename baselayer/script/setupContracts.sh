@@ -7,3 +7,11 @@ echo "DEPLOYING NFT, MINTING AND DISTRIBUTING IT"
 
 echo "DEPLOYING AND DISTRIBUTING DERC20"
 ./deployDERC20.sh
+
+echo "DEPOSITING ERC20s to Portal"
+./erc20deposit.sh
+
+echo "DEPOSITING ERC721 to Portal"
+./NFTdeposit.sh
+
+
