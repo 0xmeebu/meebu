@@ -1,6 +1,5 @@
-import { Divider, Flex, ScrollArea, Text } from '@mantine/core';
+import { Flex, ScrollArea } from '@mantine/core';
 import ProposalCard from './ProposalCard';
-import { IconPinned } from '@tabler/icons-react'
 import { MeebuState } from '../../Interfaces';
 import DaoDivider from './DaoDivider';
 
