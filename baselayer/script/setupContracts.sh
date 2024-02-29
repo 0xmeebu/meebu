@@ -15,3 +15,7 @@ echo "DEPOSITING ERC721 to Portal"
 ./NFTdeposit.sh
 
 
+echo "CREATING NEW COMMUNITIES"
+./createManyCommunities.sh
+
+
