@@ -12,27 +12,26 @@
 
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { useSetChain, useWallets } from "@web3-onboard/react";
+import { useConnectWallet, } from "@web3-onboard/react";
 
 import {
-    CartesiDApp,
-    CartesiDApp__factory,
-    InputBox,
-    InputBox__factory,
-    EtherPortal,
-    EtherPortal__factory,
-    ERC20Portal,
-    ERC20Portal__factory,
-    ERC721Portal,
-    ERC721Portal__factory,
-    DAppAddressRelay,
-    DAppAddressRelay__factory,
-    ERC1155SinglePortal,
-    ERC1155SinglePortal__factory,
-    ERC1155BatchPortal,
-    ERC1155BatchPortal__factory
+  CartesiDApp,
+  CartesiDApp__factory,
+  InputBox,
+  InputBox__factory,
+  EtherPortal,
+  EtherPortal__factory,
+  ERC20Portal,
+  ERC20Portal__factory,
+  ERC721Portal,
+  ERC721Portal__factory,
+  DAppAddressRelay,
+  DAppAddressRelay__factory,
+  ERC1155SinglePortal,
+  ERC1155SinglePortal__factory,
+  ERC1155BatchPortal,
+  ERC1155BatchPortal__factory
 } from "./generated/rollups";
-import { ConnectedChain } from "@web3-onboard/core";
 
 import configFile from "./config.json";
 import { JsonRpcSigner } from "@ethersproject/providers";
@@ -41,121 +40,128 @@ const config: any = configFile;
 
 
 export interface RollupsContracts {
-    dappContract: CartesiDApp;
-    signer: JsonRpcSigner;
-    relayContract: DAppAddressRelay;
-    inputContract: InputBox;
-    etherPortalContract: EtherPortal;
-    erc20PortalContract: ERC20Portal;
-    erc721PortalContract: ERC721Portal;
-    erc1155SinglePortalContract: ERC1155SinglePortal;
-    erc1155BatchPortalContract: ERC1155BatchPortal;
+  dappAddress: string
+  dappContract: CartesiDApp;
+  signer: JsonRpcSigner;
+  connecting: boolean;
+  relayContract: DAppAddressRelay;
+  inputContract: InputBox;
+  etherPortalContract: EtherPortal;
+  erc20PortalContract: ERC20Portal;
+  erc721PortalContract: ERC721Portal;
+  erc1155SinglePortalContract: ERC1155SinglePortal;
+  erc1155BatchPortalContract: ERC1155BatchPortal;
 }
 
-export const useRollups = (dAddress: string): RollupsContracts | undefined => {
-    const [contracts, setContracts] = useState<RollupsContracts | undefined>();
-    const [{ connectedChain }] = useSetChain();
-    const [connectedWallet] = useWallets();
-    const [dappAddress] = useState<string>(dAddress);
+export const useRollups = (): RollupsContracts | undefined => {
+  const dappAddress = "0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C"
+  const [{ wallet, connecting }, connect, _disconnect] = useConnectWallet()
+  const [contracts, setContracts] = useState<RollupsContracts | undefined>();
 
-    useEffect(() => {
-        const connect = async (
-            chain: ConnectedChain
-            ): Promise<RollupsContracts> => {
-            const provider = new ethers.providers.Web3Provider(
-                connectedWallet.provider
-            );
-            const signer = provider.getSigner();
 
-            let dappRelayAddress = "";
-            if(config[chain.id]?.DAppRelayAddress) {
-                dappRelayAddress = config[chain.id].DAppRelayAddress;
-            } else {
-                console.error(`No dapp relay address address defined for chain ${chain.id}`);
-            }
+  useEffect(() => {
 
-            let inputBoxAddress = "";
-            if(config[chain.id]?.InputBoxAddress) {
-                inputBoxAddress = config[chain.id].InputBoxAddress;
-            } else {
-                console.error(`No input box address address defined for chain ${chain.id}`);
-            }
+    // create an ethers provider
+    let ethersProvider
+    if (!wallet) {
+      connect()
+      return
+    }
 
-            let etherPortalAddress = "";
-            if(config[chain.id]?.EtherPortalAddress) {
-                etherPortalAddress = config[chain.id].EtherPortalAddress;
-            } else {
-                console.error(`No ether portal address address defined for chain ${chain.id}`);
-            }
+    ethersProvider = new ethers.providers.Web3Provider(wallet.provider, 'any')
+    const chain = wallet.chains[0]
 
-            let erc20PortalAddress = "";
-            if(config[chain.id]?.Erc20PortalAddress) {
-                erc20PortalAddress = config[chain.id].Erc20PortalAddress;
-            } else {
-                console.error(`No erc20 portal address address defined for chain ${chain.id}`);
-                alert(`No erc20 portal address defined for chain ${chain.id}`);
-            }
+    const provider = new ethers.providers.Web3Provider(
+      wallet.provider
+    );
+    const signer = provider.getSigner();
 
-            let erc721PortalAddress = "";
-            if(config[chain.id]?.Erc721PortalAddress) {
-                erc721PortalAddress = config[chain.id].Erc721PortalAddress;
-            } else {
-                console.error(`No erc721 portal address address defined for chain ${chain.id}`);
-                alert(`No erc721 portal address defined for chain ${chain.id}`);
-            }
+    let dappRelayAddress = "";
+    if (config[chain.id]?.DAppRelayAddress) {
+      dappRelayAddress = config[chain.id].DAppRelayAddress;
+    } else {
+      console.error(`No dapp relay address address defined for chain ${chain.id}`);
+    }
 
-            let erc1155SinglePortalAddress = "";
-            if(config[chain.id]?.Erc1155SinglePortalAddress) {
-                erc1155SinglePortalAddress = config[chain.id].Erc1155SinglePortalAddress;
-            } else {
-                console.error(`No erc1155 single portal address address defined for chain ${chain.id}`);
-                alert(`No erc1155 single portal address defined for chain ${chain.id}`);
-            }
+    let inputBoxAddress = "";
+    if (config[chain.id]?.InputBoxAddress) {
+      inputBoxAddress = config[chain.id].InputBoxAddress;
+    } else {
+      console.error(`No input box address address defined for chain ${chain.id}`);
+    }
 
-            let erc1155BatchPortalAddress = "";
-            if(config[chain.id]?.Erc1155BatchPortalAddress) {
-                erc1155BatchPortalAddress = config[chain.id].Erc1155BatchPortalAddress;
-            } else {
-                console.error(`No erc1155 batch portal address address defined for chain ${chain.id}`);
-                alert(`No erc1155 batch portal address defined for chain ${chain.id}`);
-            }
-            // dapp contract 
-            const dappContract = CartesiDApp__factory.connect(dappAddress, signer);
+    let etherPortalAddress = "";
+    if (config[chain.id]?.EtherPortalAddress) {
+      etherPortalAddress = config[chain.id].EtherPortalAddress;
+    } else {
+      console.error(`No ether portal address address defined for chain ${chain.id}`);
+    }
 
-            // relay contract
-            const relayContract = DAppAddressRelay__factory.connect(dappRelayAddress, signer);
+    let erc20PortalAddress = "";
+    if (config[chain.id]?.Erc20PortalAddress) {
+      erc20PortalAddress = config[chain.id].Erc20PortalAddress;
+    } else {
+      console.error(`No erc20 portal address address defined for chain ${chain.id}`);
+      alert(`No erc20 portal address defined for chain ${chain.id}`);
+    }
 
-            // input contract
-            const inputContract = InputBox__factory.connect(inputBoxAddress, signer);
-            
-            // portals contracts
-            const etherPortalContract = EtherPortal__factory.connect(etherPortalAddress, signer);
+    let erc721PortalAddress = "";
+    if (config[chain.id]?.Erc721PortalAddress) {
+      erc721PortalAddress = config[chain.id].Erc721PortalAddress;
+    } else {
+      console.error(`No erc721 portal address address defined for chain ${chain.id}`);
+      alert(`No erc721 portal address defined for chain ${chain.id}`);
+    }
 
-            const erc20PortalContract = ERC20Portal__factory.connect(erc20PortalAddress, signer);
+    let erc1155SinglePortalAddress = "";
+    if (config[chain.id]?.Erc1155SinglePortalAddress) {
+      erc1155SinglePortalAddress = config[chain.id].Erc1155SinglePortalAddress;
+    } else {
+      console.error(`No erc1155 single portal address address defined for chain ${chain.id}`);
+      alert(`No erc1155 single portal address defined for chain ${chain.id}`);
+    }
 
-            const erc721PortalContract = ERC721Portal__factory.connect(erc721PortalAddress, signer);
+    let erc1155BatchPortalAddress = "";
+    if (config[chain.id]?.Erc1155BatchPortalAddress) {
+      erc1155BatchPortalAddress = config[chain.id].Erc1155BatchPortalAddress;
+    } else {
+      console.error(`No erc1155 batch portal address address defined for chain ${chain.id}`);
+      alert(`No erc1155 batch portal address defined for chain ${chain.id}`);
+    }
+    // dapp contract 
+    const dappContract = CartesiDApp__factory.connect(dappAddress, signer);
 
-            const erc1155SinglePortalContract = ERC1155SinglePortal__factory.connect(erc1155SinglePortalAddress, signer);
+    // relay contract
+    const relayContract = DAppAddressRelay__factory.connect(dappRelayAddress, signer);
 
-            const erc1155BatchPortalContract = ERC1155BatchPortal__factory.connect(erc1155BatchPortalAddress, signer);
+    // input contract
+    const inputContract = InputBox__factory.connect(inputBoxAddress, signer);
 
-            return {
-                dappContract,
-                signer,
-                relayContract,
-                inputContract,
-                etherPortalContract,
-                erc20PortalContract,
-                erc721PortalContract,
-                erc1155SinglePortalContract,
-                erc1155BatchPortalContract,
-            };
-        };
-        if (connectedWallet?.provider && connectedChain) {
-            connect(connectedChain).then((contracts) => {
-                setContracts(contracts);
-            });
-        }
-    }, [connectedWallet, connectedChain, dappAddress]);
-    return contracts;
+    // portals contracts
+    const etherPortalContract = EtherPortal__factory.connect(etherPortalAddress, signer);
+
+    const erc20PortalContract = ERC20Portal__factory.connect(erc20PortalAddress, signer);
+
+    const erc721PortalContract = ERC721Portal__factory.connect(erc721PortalAddress, signer);
+
+    const erc1155SinglePortalContract = ERC1155SinglePortal__factory.connect(erc1155SinglePortalAddress, signer);
+
+    const erc1155BatchPortalContract = ERC1155BatchPortal__factory.connect(erc1155BatchPortalAddress, signer);
+
+    setContracts({
+      dappAddress,
+      dappContract,
+      signer,
+      connecting,
+      relayContract,
+      inputContract,
+      etherPortalContract,
+      erc20PortalContract,
+      erc721PortalContract,
+      erc1155SinglePortalContract,
+      erc1155BatchPortalContract,
+    });
+  }, [wallet, connecting]);
+
+  return contracts;
 };

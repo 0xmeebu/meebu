@@ -2,13 +2,10 @@ import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
 import tokens from '../tokenList';
-import { useConnectWallet } from '@web3-onboard/react';
-import NoWalletButton from './NoWalletButton';
 import AddInputButton from './AddInputButton';
 import tallingSystemList from '../tallyingSystemList';
 
 function ProposalCreationForm() {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => {
@@ -19,23 +16,15 @@ function ProposalCreationForm() {
     });
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
-
+  const empty: { address: string, weight: number }[] = []
+  const empty2: { address: string, multiplier: number }[] = []
   const form = useForm({
     initialValues: {
       title: '',
       description: '',
       orgAddress: '',
-      ERC20Weights: [{
-        address: '',
-        weight: 0,
-        timeWeighted: false,
-      }],
-      ERC721Weights: [{
-        address: '',
-        multiplier: 0,
-        timeWeighted: false,
-
-      }],
+      ERC20Weights: empty,
+      ERC721Weights: empty2,
       tallyingSystem: 0,
       ballot: [{
         description: '',
@@ -52,12 +41,6 @@ function ProposalCreationForm() {
     "0x1e857b4985FC9a6e5d9b9B2C2d8E7747Df27b020",
     "0x4b4a439D53395D74D105A2e16f1d8f0D90b6bC56"
   ];
-
-  // const tallingSystemList = [
-  //   { label: 'Ranked Voting', value: '0' },
-  //   { label: 'Simple Majority', value: '1', disabled: true },
-  // ];
-
 
   const newProposalInput = () => {
     let input = {
@@ -92,9 +75,6 @@ function ProposalCreationForm() {
 
     let payload = "0x" + Buffer.from(JSON.stringify(input)).toString("hex")
     return payload
-
-    // console.log(JSON.stringify(form.values, null, 2))
-    // console.log(JSON.stringify(input, null, 2))
   }
 
   const ERC20Fields = form.values.ERC20Weights.map((_item, index) => (
@@ -122,7 +102,7 @@ function ProposalCreationForm() {
     </Group>
   ));
 
-  const ERC721Fields = form.values.ERC721Weights.map((item, index) => (
+  const ERC721Fields = form.values.ERC721Weights.map((_item, index) => (
     <Group key={index} mt="xs">
       <Select
         data={tokens}
@@ -150,7 +130,7 @@ function ProposalCreationForm() {
 
   const policyFields =
 
-    form.values.ballot.map((item, index) => (
+    form.values.ballot.map((_item, index) => (
       <Group key={index} mt="xs">
         <TextInput
           placeholder="Policy Statement"
@@ -294,9 +274,7 @@ function ProposalCreationForm() {
           </Button>
         )}
         {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-        {active == 3 && wallet && < AddInputButton label="Submit Proposal" payload={newProposalInput()}/>}
-        {active == 3 && !wallet && <NoWalletButton label="Submit Proposal"></NoWalletButton>}
-
+        {active == 3 && <AddInputButton label="Submit Proposal" payload={newProposalInput()} />}
       </Group>
     </>
   );
