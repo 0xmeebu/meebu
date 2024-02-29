@@ -3,6 +3,7 @@ import RankedVoteModal from '../RankedVoteModal';
 import { MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
 import tokens from "../../Data/tokenList";
+import { useRollups } from '../../useRollups';
 
 interface ProposalCardProps {
   state: MeebuState;
@@ -43,6 +44,8 @@ function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
 }
 
 function ProposalCard(props: ProposalCardProps) {
+  const rollups = useRollups();
+
   const org = props.state.Orgs[props.orgAddress]
   if (!org) {
     return (
@@ -78,17 +81,16 @@ function ProposalCard(props: ProposalCardProps) {
     )
   })
 
-  let userInfo = newUserProposalStatus(proposal, props.state.Voters, "0xf39fd6e51aad88f6f4ce6ab8827279cfffb9226")
+  let userInfo = newUserProposalStatus(proposal, props.state.Voters, rollups?.userAddress || null)
+
 
   return (
-    <Paper shadow="sm" p="lg" radius="md" withBorder maw={"55ch"} >
+    <Paper shadow="sm" p="lg" radius="md" withBorder miw={"55ch"} maw={"55ch"} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }} >
       <Stack>
         <Title order={1}> {proposal.Title} </Title>
         <Box color="pink" style={{ paddingLeft: "0.5em", borderLeft: "0.3rem solid pink" }}>
           <Text fw={200}> {proposal.Description} </Text>
         </Box>
-
-        <Divider my="xs" />
 
         <Stack gap="xs">
           <Title order={2}> Governance Framework </Title>
