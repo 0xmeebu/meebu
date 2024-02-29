@@ -1,6 +1,6 @@
 export interface TokenWeight {
-  weight: number;
-  timeWeighted: boolean;
+  Weight: number;
+  TimeWeighted: boolean;
 }
 
 export interface TokenList {

@@ -27,16 +27,6 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         connectedWallet.provider
     );
 
-    const sendAddress = async (str: string) => {
-        if (rollups) {
-            try {
-                await rollups.relayContract.relayDAppAddress(propos.dappAddress);
-            } catch (e) {
-                console.log(`${e}`);
-            }
-        }
-    };
-
     const addInput = async (str: string) => {
         if (rollups) {
             try {
@@ -81,20 +71,6 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         }
     };
 
-    const depositEtherToPortal = async (amount: number) => {
-        try {
-            if (rollups && provider) {
-                const data = ethers.utils.toUtf8Bytes(`Deposited (${amount}) ether.`);
-                const txOverrides = {value: ethers.utils.parseEther(`${amount}`)}
-
-                // const tx = await ...
-                rollups.etherPortalContract.depositEther(propos.dappAddress,data,txOverrides);
-            }
-        } catch (e) {
-            console.log(`${e}`);
-        }
-    };
-
     const transferNftToPortal = async (contractAddress: string,nftid: number) => {
         try {
             if (rollups && provider) {
@@ -127,102 +103,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         }
     };
 
-    const transferErc1155SingleToPortal = async (contractAddress: string, id: number, amount: number) => {
-        try {
-            if (rollups && provider) {
-                const data = ethers.utils.toUtf8Bytes(`Deposited (${amount}) tokens from id (${id}) of ERC1155 (${contractAddress}).`);
-                //const data = `Deposited ${args.amount} tokens (${args.token}) for DAppERC20Portal(${portalAddress}) (signer: ${address})`;
-                const signer = provider.getSigner();
-                const signerAddress = await signer.getAddress()
 
-                const erc1155SinglePortalAddress = rollups.erc1155SinglePortalContract.address;
-
-                const tokenContract = signer ? IERC1155__factory.connect(contractAddress, signer) : IERC1155__factory.connect(contractAddress, provider);
-
-                // query current approval
-                const currentApproval = await tokenContract.isApprovedForAll(signerAddress,erc1155SinglePortalAddress);
-                if (!currentApproval) {
-                    // Allow portal to withdraw `amount` tokens from signer
-                    const tx = await tokenContract.setApprovalForAll(erc1155SinglePortalAddress,true);
-                    const receipt = await tx.wait(1);
-                    const event = (await tokenContract.queryFilter(tokenContract.filters.ApprovalForAll(), receipt.blockHash)).pop();
-                    if (!event) {
-                        throw Error(`could set approval for DAppERC1155Portal(${erc1155SinglePortalAddress})  (signer: ${signerAddress}, tx: ${tx.hash})`);
-                    }
-                }
-
-                // Transfer
-                rollups.erc1155SinglePortalContract.depositSingleERC1155Token(contractAddress,propos.dappAddress, id, amount, "0x", data);
-            }
-        } catch (e) {
-            console.log(`${e}`);
-        }
-    };
-
-    const transferErc1155BatchToPortal = async (contractAddress: string, ids: number[], amounts: number[]) => {
-        try {
-            if (rollups && provider) {
-                const data = ethers.utils.toUtf8Bytes(`Deposited (${amounts}) tokens from ids (${ids}) of ERC1155 (${contractAddress}).`);
-                //const data = `Deposited ${args.amount} tokens (${args.token}) for DAppERC20Portal(${portalAddress}) (signer: ${address})`;
-                const signer = provider.getSigner();
-                const signerAddress = await signer.getAddress()
-
-                const erc1155BatchPortalAddress = rollups.erc1155BatchPortalContract.address;
-
-                const tokenContract = signer ? IERC1155__factory.connect(contractAddress, signer) : IERC1155__factory.connect(contractAddress, provider);
-
-                // query current approval
-                const currentApproval = await tokenContract.isApprovedForAll(signerAddress,erc1155BatchPortalAddress);
-                if (!currentApproval) {
-                    // Allow portal to withdraw `amount` tokens from signer
-                    const tx = await tokenContract.setApprovalForAll(erc1155BatchPortalAddress,true);
-                    const receipt = await tx.wait(1);
-                    const event = (await tokenContract.queryFilter(tokenContract.filters.ApprovalForAll(), receipt.blockHash)).pop();
-                    if (!event) {
-                        throw Error(`could set approval for DAppERC1155Portal(${erc1155BatchPortalAddress})  (signer: ${signerAddress}, tx: ${tx.hash})`);
-                    }
-                }
-
-                // Transfer
-                rollups.erc1155BatchPortalContract.depositBatchERC1155Token(contractAddress,propos.dappAddress, ids, amounts, "0x", data);
-            }
-        } catch (e) {
-            console.log(`${e}`);
-        }
-    };
-
-    const AddTo1155Batch = () => {
-        const newIds = erc1155Ids;
-        newIds.push(erc1155Id);
-        setErc1155Ids(newIds);
-        const newAmounts = erc1155Amounts;
-        newAmounts.push(erc1155Amount);
-        setErc1155Amounts(newAmounts);
-        setErc1155IdsStr("["+erc1155Ids.join(',')+"]");
-        setErc1155AmountsStr("["+erc1155Amounts.join(',')+"]");
-    };
-
-    const Clear1155Batch = () => {
-        setErc1155IdsStr("[]");
-        setErc1155AmountsStr("[]");
-        setErc1155Ids([]);
-        setErc1155Amounts([]);
-    };
-    
-    const [input, setInput] = useState<string>("");
-    const [hexInput, setHexInput] = useState<boolean>(false);
-    const [erc20Amount, setErc20Amount] = useState<number>(0);
-    const [erc20Token, setErc20Token] = useState<string>("");
-    const [erc721Id, setErc721Id] = useState<number>(0);
-    const [erc721, setErc721] = useState<string>("");
-    const [etherAmount, setEtherAmount] = useState<number>(0);
-    const [erc1155, setErc1155] = useState<string>("");
-    const [erc1155Id, setErc1155Id] = useState<number>(0);
-    const [erc1155Amount, setErc1155Amount] = useState<number>(0);
-    const [erc1155Ids, setErc1155Ids] = useState<number[]>([]);
-    const [erc1155Amounts, setErc1155Amounts] = useState<number[]>([]);
-    const [erc1155IdsStr, setErc1155IdsStr] = useState<string>("[]");
-    const [erc1155AmountsStr, setErc1155AmountsStr] = useState<string>("[]");
 
     return (
         <div>

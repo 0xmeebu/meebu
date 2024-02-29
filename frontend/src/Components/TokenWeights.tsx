@@ -15,8 +15,8 @@ function mergeObjects(tokens: Map<string, TokenWeight>, listB: TokenList[]): Map
   tokens.forEach((v, k, _m) => {
     ret.set(k, {
       address: k,
-      weight: v.weight,
-      timeWeighted: v.timeWeighted,
+      weight: v.Weight,
+      timeWeighted: v.TimeWeighted,
       label: null,
       uri: null,
     })
