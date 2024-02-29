@@ -1,4 +1,4 @@
-import { Flex, ScrollArea } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import ProposalCard from './ProposalCard';
 import { MeebuState } from '../../Interfaces';
 import DaoDivider from './DaoDivider';
@@ -24,13 +24,11 @@ function ProposalsRow(props: ProposalsRowProps) {
   return (
     <>
       <DaoDivider label={props.orgAddress} />
-      <ScrollArea>
-        <Flex gap="xl">
-          {proposals.map((_proposal, index) => (
-            <ProposalCard state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
-          ))}
-        </Flex>
-      </ScrollArea>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
+        {proposals.map((_proposal, index) => (
+          <ProposalCard state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
+        ))}
+      </SimpleGrid>
     </>
   );
 }

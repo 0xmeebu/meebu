@@ -2,9 +2,9 @@ import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { UseMeebuState } from "../Hooks/UseMeebuState";
 import { NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
-import tokens from '../tokenList';
+import tokens from '../Data/tokenList';
 import AddInputButton from './AddInputButton';
-import tallingSystemList from '../tallyingSystemList';
+import tallingSystemList from '../Data/tallyingSystemList';
 
 function ProposalCreationForm() {
   const [active, setActive] = useState(0);

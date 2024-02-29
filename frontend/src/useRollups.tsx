@@ -40,7 +40,8 @@ const config: any = configFile;
 
 
 export interface RollupsContracts {
-  dappAddress: string
+  userAddress: string;
+  dappAddress: string;
   dappContract: CartesiDApp;
   signer: JsonRpcSigner;
   connecting: boolean;
@@ -149,6 +150,7 @@ export const useRollups = (): RollupsContracts | undefined => {
     const erc1155BatchPortalContract = ERC1155BatchPortal__factory.connect(erc1155BatchPortalAddress, signer);
 
     setContracts({
+      userAddress: wallet.accounts[0].address,
       dappAddress,
       dappContract,
       signer,

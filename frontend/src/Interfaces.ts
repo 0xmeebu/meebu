@@ -71,7 +71,7 @@ export interface UserProposalStatus {
   hasVoted: boolean;
   power: BigNumber;
   totalVoters: number;
-  averagePower: BigNumber;
+  averagePower: string;
 }
 
 
@@ -99,7 +99,7 @@ export function userPower(
 export function newUserProposalStatus(
   proposal: Proposal,
   voterMap: voterMap,
-  user: string
+  user: string | null
 ): UserProposalStatus {
   let powers: { [key: string]: BigNumber } = {}
   for (let [address, balances] of Object.entries(voterMap)) {
@@ -116,10 +116,17 @@ export function newUserProposalStatus(
     }
   }
 
+  let averagePower
+  if (totalVoters == 0) {
+    averagePower = "n/a"
+  } else {
+    averagePower = totalPower.div(totalVoters).toString()
+  }
+
   return {
-    hasVoted: proposal.HasVoted[user] || false,
-    power: powers[user] || BigNumber.from(0),
+    hasVoted: proposal.HasVoted[user || ""] || false,
+    power: powers[user || ""] || BigNumber.from(0),
     totalVoters,
-    averagePower: totalPower.div(totalVoters),
+    averagePower,
   }
 }
