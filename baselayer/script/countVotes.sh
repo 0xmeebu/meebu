@@ -2,4 +2,6 @@
 
 count_votes_json=$(<jsons/count_votes.json)
 
-sunodo send generic --dapp 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C --input-encoding string --input "$count_votes_json"
+#sunodo send generic --dapp 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C --input-encoding string --input "$count_votes_json"
+
+cast send 0x59b22D57D4f067708AB0c00552767405926dc768 "addInput(address,bytes)" 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C 0x7b224d6574686f64223a22436f756e74566f746573222c22426f6479223a7b224f726741646472657373223a22307836314162353162453743383636613534423042343432633134396437373135333637373433456644222c2250726f706f73616c223a307d7d --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
