@@ -7,7 +7,7 @@ interface DaoDividerProps {
 
 function DaoDivider(props: DaoDividerProps) {
   return (
-    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF' />  <Text c='pink' size='sm' fw={700}>{props.label}</Text> </>} labelPosition="left" />
+    <Divider my="lg" size='sm' color='pink' label={<> <IconPinned color='#FF08FF' />  <Text c='pink' size='sm' fw={700}>Community: {props.label}</Text> </>} labelPosition="left" />
 
   );
 }
