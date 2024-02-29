@@ -5,6 +5,7 @@ import { IconGripVertical } from '@tabler/icons-react';
 import { Policy } from '../Interfaces';
 
 import NoWalletButton from './NoWalletButton';
+import AddInputButton from './AddInputButton';
 import { useConnectWallet } from '@web3-onboard/react';
 
 interface RankedVoteProps {
@@ -38,9 +39,7 @@ function RankedVote(props: RankedVoteProps) {
       }
     }
     let _payload = JSON.stringify(input)
-
-    console.log(JSON.stringify({ ...form.values, preference: preference }, null, 2))
-    console.log("payload", JSON.stringify(input, null, 2))
+    return "0x" + Buffer.from(JSON.stringify(_payload)).toString("hex")
   }
 
   const fields = form.values.list.map((_, index) => (
@@ -87,7 +86,7 @@ function RankedVote(props: RankedVoteProps) {
           </Droppable>
         </DragDropContext>
         <br />
-        {wallet && <Button onClick={castVoteInput}> Cast Vote </Button>}
+        {wallet && <AddInputButton label="Cast Vote" payload={castVoteInput()}/>}
         {!wallet && <NoWalletButton label="Cast Vote"></NoWalletButton>}
       </Box>
     </>

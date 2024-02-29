@@ -4,6 +4,8 @@ import { NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text
 import tokens from '../tokenList';
 import { useConnectWallet } from '@web3-onboard/react';
 import NoWalletButton from './NoWalletButton';
+import AddInputButton from './AddInputButton';
+import tallingSystemList from '../tallyingSystemList';
 
 function ProposalCreationForm() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
@@ -51,10 +53,10 @@ function ProposalCreationForm() {
     "0x4b4a439D53395D74D105A2e16f1d8f0D90b6bC56"
   ];
 
-  const tallingSystemList = [
-    { label: 'Ranked Voting', value: '0' },
-    { label: 'Simple Majority', value: '1', disabled: true },
-  ];
+  // const tallingSystemList = [
+  //   { label: 'Ranked Voting', value: '0' },
+  //   { label: 'Simple Majority', value: '1', disabled: true },
+  // ];
 
 
   const newProposalInput = () => {
@@ -78,7 +80,7 @@ function ProposalCreationForm() {
             TimeWeighted: false,
           }
         }),
-        TallyingSystem: tallingSystemList[form.values.tallyingSystem].value,
+        TallyingSystem: parseInt(tallingSystemList[form.values.tallyingSystem].value),
         Ballot: form.values.ballot.map(p => {
           return {
             Voucher: p.voucher,
@@ -88,10 +90,11 @@ function ProposalCreationForm() {
       }
     }
 
-    let _payload = JSON.stringify(input)
+    let payload = "0x" + Buffer.from(JSON.stringify(input)).toString("hex")
+    return payload
 
-    console.log(JSON.stringify(form.values, null, 2))
-    console.log(JSON.stringify(input, null, 2))
+    // console.log(JSON.stringify(form.values, null, 2))
+    // console.log(JSON.stringify(input, null, 2))
   }
 
   const ERC20Fields = form.values.ERC20Weights.map((_item, index) => (
@@ -291,7 +294,7 @@ function ProposalCreationForm() {
           </Button>
         )}
         {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-        {active == 3 && wallet && <Button onClick={newProposalInput}> Submit Proposal </Button>}
+        {active == 3 && wallet && < AddInputButton label="Submit Proposal" payload={newProposalInput()}/>}
         {active == 3 && !wallet && <NoWalletButton label="Submit Proposal"></NoWalletButton>}
 
       </Group>
