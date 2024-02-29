@@ -25,7 +25,7 @@ function ProposalsRow(props: ProposalsRowProps) {
     <>
       <DaoDivider label={props.orgAddress} />
       <ScrollArea>
-        <Flex gap="lg">
+        <Flex gap="xl">
           {proposals.map((_proposal, index) => (
             <ProposalCard state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
           ))}
