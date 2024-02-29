@@ -1,5 +1,6 @@
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
+import { UseMeebuState } from "../Hooks/UseMeebuState";
 import { NumberInput, Select, JsonInput, CloseButton, Switch, NativeSelect, Text, Box, Autocomplete, Stepper, Button, Group, TextInput, Textarea, Code } from '@mantine/core';
 import tokens from '../tokenList';
 import AddInputButton from './AddInputButton';
@@ -33,14 +34,15 @@ function ProposalCreationForm() {
     },
   });
 
-  const daoList = [
-    "0x7dF16aE462EAe1dAeC8d7b281780EFe98663528F",
-    "0x5F1bC2D1dA7a51B77B1Fa27a6Cb12e112Abd5eA3",
-    "0xCcD7f456eF5321F5bCDE5f09e2dB88979f5e0f1D",
-    "0x4E3FaA295BD85031FdCc0E5A42b593Ce3eBcfB56",
-    "0x1e857b4985FC9a6e5d9b9B2C2d8E7747Df27b020",
-    "0x4b4a439D53395D74D105A2e16f1d8f0D90b6bC56"
-  ];
+  const { state, updating, error } = UseMeebuState();
+  if (state === null) {
+    return (
+      <div>
+        Loading...
+      </div>
+    );
+  }
+  const communities: string[] = Object.keys(state.Orgs)
 
   const newProposalInput = () => {
     let input = {
@@ -161,9 +163,9 @@ function ProposalCreationForm() {
       <Stepper active={active} color='pink'>
         <Stepper.Step label="First step" description="Profile settings">
           <Autocomplete
-            label="DAO Address"
-            placeholder="Pick the DAO"
-            data={daoList}
+            label="Community Address"
+            placeholder="Community"
+            data={communities}
             {...form.getInputProps('orgAddress')}
           />
           <TextInput label="Title" placeholder="what is the proposal deciding about" {...form.getInputProps('title')} />
