@@ -1,6 +1,6 @@
 import { Text, Stack, Title, List, Paper, Accordion, Box, Badge, Group, Loader } from '@mantine/core';
 import RankedVoteModal from '../RankedVoteModal';
-import { addInfo, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
+import { addInfo, MeebuState, newUserProposalStatus } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
 import { useRollups } from '../../useRollups';
 import DisplayWallet from '../DisplayTokenWeights';
