@@ -83,8 +83,11 @@ export function userPower(
   let power = BigNumber.from(0)
 
   for (let [address, t] of Object.entries(erc20Weights)) {
-    let balance = BigNumber.from(balances.Erc20Balances[address].Balance)
-    power = power.add(balance.mul(t.Weight))
+    let b = balances.Erc20Balances[address]
+    if (b) {
+      let balance = BigNumber.from(b.Balance)
+      power = power.add(balance.mul(t.Weight))
+    }
   }
 
   for (let [address, t] of Object.entries(erc721Multipliers)) {

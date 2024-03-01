@@ -7,8 +7,6 @@ import { UseMeebuState } from "../../Hooks/UseMeebuState";
 function ProposalsDisplay() {
   const { state, updating, error } = UseMeebuState();
 
-  // console.log(JSON.stringify(state, null, 2))
-
   if (state === null) {
     return (
       <div>
