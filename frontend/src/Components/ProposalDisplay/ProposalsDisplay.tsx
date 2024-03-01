@@ -18,7 +18,7 @@ function ProposalsDisplay() {
   return (
     <>
       {Object.entries(state.Orgs).map(([string, _org]) => (
-        < ProposalsRow state={state} orgAddress={string} />
+        < ProposalsRow key={string} state={state} orgAddress={string} />
       ))}
     </>
   );
