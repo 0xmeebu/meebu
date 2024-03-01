@@ -1,4 +1,4 @@
-import { Text, Stack, Title, List, Paper, Accordion, Box, Badge } from '@mantine/core';
+import { Text, Stack, Title, List, Paper, Accordion, Box, Badge, Group } from '@mantine/core';
 import RankedVoteModal from '../RankedVoteModal';
 import { addInfo, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
@@ -39,6 +39,8 @@ function ProposalCard(props: ProposalCardProps) {
     );
   }
 
+  console.log(proposal)
+
   let erc20Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([_x, y]) => {
     return (
       y
@@ -49,11 +51,15 @@ function ProposalCard(props: ProposalCardProps) {
       y
     )
   })
-
-  let ballot = Object.entries(proposal.Ballot).map(([x, y]) => {
+  let ballot = proposal.Ballot.map((v, k) => {
     return (
-      <List.Item key={x}>
-        <Text fs={"xl"} style={underline}> {y.Description} </Text>
+      <List.Item key={k}>
+        <Group>
+          <Text fs={"xl"} style={underline}> {v.Description} </Text>
+          {(!proposal.Open && proposal.WinnerIndex === k) &&
+            <Badge color="pink">{"winner"}</Badge>
+          }
+        </Group>
       </List.Item>
     )
   })
@@ -65,13 +71,14 @@ function ProposalCard(props: ProposalCardProps) {
     <Paper shadow="sm" p="lg" radius="md" withBorder miw={"55ch"} maw={"55ch"} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }} >
       <Stack>
         <Title order={1}> {proposal.Title} </Title>
-        <Box color="pink" style={{ paddingLeft: "0.5em", borderLeft: "0.3rem solid pink" }}>
+        <Badge color={proposal.Open ? "pink" : "grey"}>{proposal.Open ? "open" : "finished"}</Badge>
+        <Box color="blue" style={{ paddingLeft: "0.5em", borderLeft: "0.3rem solid pink" }}>
           <Text fw={200}> {proposal.Description} </Text>
         </Box>
 
         <Stack gap="xs">
           <Title order={2}> Governance Framework </Title>
-          <Badge color="pink">{tallingSystemList[proposal.TallyingSystem].label}</Badge>
+          <Text fw={600} size={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
           <DisplayWallet Erc20Weights={erc20Weights} unitLabel='Weight' />
           <DisplayWallet Erc20Weights={erc721Weights} unitLabel='Bonus' suffix='%' />
         </Stack>
@@ -97,8 +104,8 @@ function ProposalCard(props: ProposalCardProps) {
 
       </Stack>
 
+      <RankedVoteModal open={proposal.Open} userVoted={userInfo.hasVoted} issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issueBallot={proposal.Ballot} />
 
-      {proposal.Open && <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issueBallot={proposal.Ballot} />}
 
     </Paper >
   );
@@ -107,6 +114,7 @@ function ProposalCard(props: ProposalCardProps) {
 /*
 
 
+      {!proposal.Open && <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issueBallot={proposal.Ballot} />}
 
           <Text fs={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
 

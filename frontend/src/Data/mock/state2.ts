@@ -31,7 +31,7 @@ export const state2: MeebuState = {
             }
           ],
           TallyingSystem: 0,
-          Winner: -1,
+          WinnerIndex: -1,
           Open: true,
           HasVoted: {
             "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": true
@@ -63,7 +63,7 @@ export const state2: MeebuState = {
             }
           ],
           TallyingSystem: 0,
-          Winner: -1,
+          WinnerIndex: -1,
           Open: true,
           HasVoted: {
             "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": true
