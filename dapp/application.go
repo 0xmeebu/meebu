@@ -116,6 +116,7 @@ func (a *RootState) Advance(
 			TallyingSystem:    body.TallyingSystem,
 			Tally:             tally.NewRankedTally(uint(len(body.Ballot))),
 			Open:              true,
+			WinnerIndex:       -1,
 			HasVoted:          make(map[common.Address]bool),
 		}
 
@@ -180,6 +181,7 @@ func (a *RootState) Advance(
 		}
 
 		winnerIndex := proposal.Tally.CloseVoting()
+		proposal.WinnerIndex = int(winnerIndex)
 		winner := proposal.Ballot[winnerIndex]
 
 		env.Voucher(body.OrgAddress, winner.Voucher)

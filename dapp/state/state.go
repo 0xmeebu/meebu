@@ -144,9 +144,10 @@ type Proposal struct {
 	TallyingSystem    TallyingSystemId
 
 	// State
-	Tally    tally.OrdinalTally
-	Open     bool
-	HasVoted map[common.Address]bool
+	Tally       tally.OrdinalTally
+	Open        bool
+	WinnerIndex int
+	HasVoted    map[common.Address]bool
 }
 
 type TokenWeight struct {

@@ -53,6 +53,7 @@ export interface Proposal {
   Erc721Multipliers: { [key: string]: TokenWeight };
   TallyingSystem: number;
   Ballot: Policy[];
+  Winner: number;
   Open: boolean;
   HasVoted: { [key: string]: boolean };
 }

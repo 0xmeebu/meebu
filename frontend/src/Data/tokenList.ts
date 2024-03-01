@@ -14,9 +14,6 @@ const tokenList = {
   ]
 }
 
-
 const tokens = tokenList.tokens.map((token) => { return { label: token.symbol, value: token.address, uri: token.logoURI } });
-console.log(tokens)
-
 
 export default tokens
