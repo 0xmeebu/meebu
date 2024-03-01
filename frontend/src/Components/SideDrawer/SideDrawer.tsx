@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import NoWalletButton from '../NoWalletButton';
+import DisplayWallet from '../DisplayWallet';
+import UserWallet from './UserWallet';
 
 function SideDrawer() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -15,6 +17,7 @@ function SideDrawer() {
     <>
       <Drawer opened={opened} onClose={close}>
         <Input dappAddress={dappAddress} />
+        <UserWallet />
       </Drawer>
 
       {wallet && <Button onClick={open} color='pink'>Stake to Vote</Button>}

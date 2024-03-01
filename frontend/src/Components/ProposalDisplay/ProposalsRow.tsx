@@ -26,7 +26,7 @@ function ProposalsRow(props: ProposalsRowProps) {
       <DaoDivider label={props.orgAddress} />
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
         {proposals.map((_proposal, index) => (
-          <ProposalCard state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
+          <ProposalCard key={index} state={props.state} index={index} orgAddress={props.orgAddress}></ProposalCard>
         ))}
       </SimpleGrid>
     </>

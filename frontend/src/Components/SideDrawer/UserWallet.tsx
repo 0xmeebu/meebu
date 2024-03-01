@@ -4,22 +4,22 @@ import { useRollups } from '../../useRollups';
 import DisplayWallet from '../DisplayWallet';
 import { UseMeebuState } from "../../Hooks/UseMeebuState";
 
-interface UserWalletProps {
-    Erc20Weights: any
-    unitLabel?: string
-    suffix?: string
+export interface TokenBalance {
+  Balance: number;
 }
 
-function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
+
+
+function addInfo(t: Map<string, TokenBalance>): Map<string, TokenInfo> {
     let ret = new Map<string, TokenInfo>
   
     t.forEach((v, k, _m) => {
       ret.set(k, {
         address: k,
-        weight: v.Weight,
-        timeWeighted: v.TimeWeighted,
+        weight: v.Balance,
         label: null,
         uri: null,
+        timeWeighted: false
       })
     })
   
@@ -34,8 +34,10 @@ function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
     return ret
   }
 
-function UserWallet(props: UserWalletProps) {
+function UserWallet() {
     const { state, updating, error } = UseMeebuState();
+    const wallet = '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc'
+
 
     if (state === null) {
         return (
@@ -45,10 +47,17 @@ function UserWallet(props: UserWalletProps) {
         );
     }
 
-    const voters = state.Voters
+    // let erc20Balances = [...addInfo(state.Voters[wallet].Erc20Balances)].map(([x, y]) => {
+    //   return (
+    //     y
+    //   )
+    // })
 
-    console.log('voters', state)
+    const w = state.Voters[wallet]
+ 
+    console.log(w.Erc20Balances)
 
+   
     return(
         <></>        
     )
