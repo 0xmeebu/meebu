@@ -1,11 +1,10 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Drawer, Button } from '@mantine/core';
+import { Drawer, Button, Stack } from '@mantine/core';
 import { Input } from './Deposits';
 import { useState } from "react";
 
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import NoWalletButton from '../NoWalletButton';
-import DisplayWallet from '../DisplayWallet';
 import UserWallet from './UserWallet';
 
 function SideDrawer() {
@@ -16,8 +15,12 @@ function SideDrawer() {
   return (
     <>
       <Drawer opened={opened} onClose={close}>
-        <Input dappAddress={dappAddress} />
+        <Stack>
+          <h1>Wallet</h1>
         <UserWallet />
+        <h1>Stake</h1>
+        <Input dappAddress={dappAddress} />
+        </Stack>
       </Drawer>
 
       {wallet && <Button onClick={open} color='pink'>Stake to Vote</Button>}

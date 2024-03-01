@@ -3,7 +3,7 @@ import RankedVoteModal from '../RankedVoteModal';
 import { addInfo, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
 import { useRollups } from '../../useRollups';
-import DisplayWallet from '../DisplayWallet';
+import DisplayWallet from '../DisplayTokenWeights';
 
 interface ProposalCardProps {
   state: MeebuState;
