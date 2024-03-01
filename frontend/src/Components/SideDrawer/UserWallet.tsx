@@ -1,4 +1,4 @@
-import { addInfo, addInfo2, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
+import { addInfo, addInfo2, addInfo3, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tokens from "../../Data/tokenList";
 import { useRollups } from '../../useRollups';
 import DisplayWallet from '../DisplayWallet';
@@ -10,9 +10,9 @@ export interface TokenBalance {
 
 function UserWallet() {
   const { state, updating, error } = UseMeebuState();
-  const userAddress = '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc'
+  const rollups = useRollups();
 
-  if (state === null) {
+  if (state === null || !rollups) {
     return (
       <div>
         Loading...
@@ -20,7 +20,7 @@ function UserWallet() {
     );
   }
 
-  const user = state.Voters[userAddress]
+  const user = state.Voters[rollups.userAddress]
   console.log("WWW1", user)
 
 
@@ -30,7 +30,16 @@ function UserWallet() {
     )
   })
 
-  console.log("WWW", erc20Wallet)
+  console.log("ERC20", erc20Wallet)
+
+  let erc721Wallet = [...addInfo3(new Map(Object.entries(user.Erc721Owned))).entries()].map(([_x, y]) => {
+    return (
+      y
+    )
+  })
+  console.log("ERC721", erc721Wallet)
+
+
 
   const l = []
 
