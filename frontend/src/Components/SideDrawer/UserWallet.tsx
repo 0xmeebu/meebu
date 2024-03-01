@@ -36,10 +36,10 @@ function UserWallet() {
 
 
   return (
-      <>
-      <DisplayWallet balance={erc20Wallet}/>
-      <DisplayWallet balance={erc721Wallet}/>
-      </>
+    <>
+      <DisplayWallet balance={erc20Wallet} />
+      <DisplayWallet balance={erc721Wallet} />
+    </>
   )
 }
 

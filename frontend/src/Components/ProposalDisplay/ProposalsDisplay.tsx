@@ -1,15 +1,12 @@
 import ProposalsRow from './ProposalsRow';
 import { UseMeebuState } from "../../Hooks/UseMeebuState";
+import { Loader } from '@mantine/core';
 
 function ProposalsDisplay() {
   const { state, updating, error } = UseMeebuState();
 
   if (state === null) {
-    return (
-      <div>
-        Loading...
-      </div>
-    );
+    return (<Loader color="pink" type="dots" />)
   }
 
   return (

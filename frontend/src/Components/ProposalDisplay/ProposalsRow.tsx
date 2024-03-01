@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@mantine/core';
+import { Loader, SimpleGrid } from '@mantine/core';
 import ProposalCard from './ProposalCard';
 import { MeebuState } from '../../Interfaces';
 import DaoDivider from './DaoDivider';
@@ -12,11 +12,7 @@ interface ProposalsRowProps {
 function ProposalsRow(props: ProposalsRowProps) {
   const org = props.state.Orgs[props.orgAddress]
   if (!org) {
-    return (
-      <div>
-        Loading...
-      </div>
-    );
+    return (<Loader color="pink" type="dots" />)
   }
 
   const proposals = org.Proposals
