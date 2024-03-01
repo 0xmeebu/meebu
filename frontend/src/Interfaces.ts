@@ -21,9 +21,16 @@ export interface TokenInfo {
   uri: string | null;
 }
 
-export interface TokenBalance {
+export interface TokenBalanceErc20 {
   address: string;
   balance: string;
+  label: string | null;
+  uri: string | null;
+}
+
+export interface TokenBalanceErc721 {
+  address: string;
+  owned: boolean;
   label: string | null;
   uri: string | null;
 }
@@ -168,13 +175,36 @@ export function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
   return ret
 }
 
-export function addInfo2(t: Map<string, Erc20Balance>): Map<string, TokenBalance> {
-  let ret = new Map<string, TokenBalance>
+export function addInfo2(t: Map<string, Erc20Balance>): Map<string, TokenBalanceErc20> {
+  let ret = new Map<string, TokenBalanceErc20>
 
   t.forEach((v, k, _m) => {
     ret.set(k, {
       address: k,
       balance: v.Balance,
+      label: null,
+      uri: null,
+    })
+  })
+
+  tokens.forEach(tl => {
+    let t = ret.get(tl.value)
+    if (t) {
+      t.label = tl.label
+      t.uri = tl.uri
+    }
+  })
+
+  return ret
+}
+
+export function addInfo3(t: Map<string, boolean>): Map<string, TokenBalanceErc721> {
+  let ret = new Map<string, TokenBalanceErc721>
+
+  t.forEach((_v, k, _m) => {
+    ret.set(k, {
+      address: k,
+      owned: true,
       label: null,
       uri: null,
     })
