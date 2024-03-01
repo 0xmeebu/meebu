@@ -3,10 +3,7 @@ import tokens from "../../Data/tokenList";
 import { useRollups } from '../../useRollups';
 import DisplayWallet from '../DisplayWallet';
 import { UseMeebuState } from "../../Hooks/UseMeebuState";
-
-export interface TokenBalance {
-  Balance: number;
-}
+import { Loader } from '@mantine/core';
 
 function UserWallet() {
   const { state, updating, error } = UseMeebuState();
@@ -14,9 +11,7 @@ function UserWallet() {
 
   if (state === null || !rollups) {
     return (
-      <div>
-        Loading...
-      </div>
+      <Loader color="pink" type="dots" />
     );
   }
 
@@ -40,23 +35,11 @@ function UserWallet() {
   console.log("ERC721", erc721Wallet)
 
 
-
-  const l = []
-
-
-  // let erc20Balances = [...addInfo(state.Voters[wallet].Erc20Balances)].map(([x, y]) => {
-  //   return (
-  //     y
-  //   )
-  // })
-
-  // const w = state.Voters[wallet]
-
-  // console.log(w.Erc20Balances)
-
-
   return (
-    <></>
+      <>
+      <DisplayWallet balance={erc20Wallet}/>
+      <DisplayWallet balance={erc721Wallet}/>
+      </>
   )
 }
 
