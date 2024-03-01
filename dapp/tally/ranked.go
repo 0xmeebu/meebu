@@ -68,6 +68,9 @@ func (t *RankedTally) CloseVoting() uint64 {
 		// Remove the candidate with the fewest votes from each ballot
 		for i := range t.Votes {
 			t.Votes[i].Preferences = removeCandidate(t.Votes[i].Preferences, lowest)
+			if len(t.Votes[i].Preferences) == 0 {
+				majority.Sub(majority, t.Votes[i].Power)
+			}
 		}
 	}
 }
