@@ -1,9 +1,6 @@
 import ProposalsRow from './ProposalsRow';
 import { UseMeebuState } from "../../Hooks/UseMeebuState";
 
-
-
-
 function ProposalsDisplay() {
   const { state, updating, error } = UseMeebuState();
 

@@ -1,3 +1,4 @@
+import tokens from "./Data/tokenList";
 import { BigNumber } from "ethers";
 
 export interface TokenWeight {
@@ -6,7 +7,7 @@ export interface TokenWeight {
 }
 
 export interface TokenList {
-  label: string;
+  address: string;
   value: string;
   uri: string;
 }
@@ -19,6 +20,14 @@ export interface TokenInfo {
   label: string | null;
   uri: string | null;
 }
+
+export interface TokenBalance {
+  address: string;
+  balance: string;
+  label: string | null;
+  uri: string | null;
+}
+
 
 export interface Policy {
   Description: string;
@@ -133,3 +142,52 @@ export function newUserProposalStatus(
     averagePower,
   }
 }
+
+
+export function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
+  let ret = new Map<string, TokenInfo>
+
+  t.forEach((v, k, _m) => {
+    ret.set(k, {
+      address: k,
+      weight: v.Weight,
+      timeWeighted: v.TimeWeighted,
+      label: null,
+      uri: null,
+    })
+  })
+
+  tokens.forEach(tl => {
+    let t = ret.get(tl.value)
+    if (t) {
+      t.label = tl.label
+      t.uri = tl.uri
+    }
+  })
+
+  return ret
+}
+
+export function addInfo2(t: Map<string, Erc20Balance>): Map<string, TokenBalance> {
+  let ret = new Map<string, TokenBalance>
+
+  t.forEach((v, k, _m) => {
+    ret.set(k, {
+      address: k,
+      balance: v.Balance,
+      label: null,
+      uri: null,
+    })
+  })
+
+  tokens.forEach(tl => {
+    let t = ret.get(tl.value)
+    if (t) {
+      t.label = tl.label
+      t.uri = tl.uri
+    }
+  })
+
+  return ret
+}
+
