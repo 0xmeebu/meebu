@@ -4,10 +4,10 @@ import { MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../..
 import tallingSystemList from '../../Data/tallyingSystemList';
 import tokens from "../../Data/tokenList";
 import { useRollups } from '../../useRollups';
+import DisplayWallet from '../DisplayWallet';
 
 interface ProposalCardProps {
   state: MeebuState;
-
   index: number;
   orgAddress: string;
 }
@@ -66,10 +66,12 @@ function ProposalCard(props: ProposalCardProps) {
 
   let erc20Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([x, y]) => {
     return (
-      <Accordion.Item key={y.address} value={y.address}>
-        <Accordion.Control icon={<Avatar src={y.uri} />}>{y.label || "unknown token"}</Accordion.Control>
-        <Accordion.Panel>{y.address}</Accordion.Panel>
-      </Accordion.Item>
+      y
+    )
+  })
+  let erc721Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([x, y]) => {
+    return (
+      y
     )
   })
 
@@ -95,18 +97,10 @@ function ProposalCard(props: ProposalCardProps) {
         <Stack gap="xs">
           <Title order={2}> Governance Framework </Title>
           <Text fs={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
-          <Accordion chevronPosition="right" variant="contained">
-            {erc20Weights}
-          </Accordion>
+          <DisplayWallet Erc20Weights={erc20Weights} unitLabel='Weight'/>
+          <DisplayWallet Erc20Weights={erc721Weights} unitLabel='Bonus' suffix='%'/>
         </Stack>
 
-        <Stack gap="xs">
-          <Title order={2}> Participation </Title>
-          <Text> hasVoted {String(userInfo.hasVoted)} </Text>
-          <Text> power {userInfo.power.toString()} </Text>
-          <Text> total voters {userInfo.totalVoters} </Text>
-          <Text> average power {userInfo.averagePower.toString()} </Text>
-        </Stack>
 
         <Stack gap="xs">
           <Title order={2}> Ballot </Title>
@@ -114,6 +108,17 @@ function ProposalCard(props: ProposalCardProps) {
             {ballot}
           </List>
         </Stack>
+
+        <Accordion transitionDuration={0}>
+          <Stack gap="xs">
+            <Title order={2}> Participation </Title>
+            <Text> hasVoted {String(userInfo.hasVoted)} </Text>
+            <Text> power {userInfo.power.toString()} </Text>
+            <Text> total voters {userInfo.totalVoters} </Text>
+            <Text> average power {userInfo.averagePower.toString()} </Text>
+          </Stack>
+        </Accordion>
+
 
       </Stack>
 
