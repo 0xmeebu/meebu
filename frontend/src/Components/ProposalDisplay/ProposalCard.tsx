@@ -1,4 +1,4 @@
-import { Text, Stack, Title, List, Paper, Accordion, Box, Badge, Group } from '@mantine/core';
+import { Text, Stack, Title, List, Paper, Accordion, Box, Badge, Group, Loader } from '@mantine/core';
 import RankedVoteModal from '../RankedVoteModal';
 import { addInfo, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
@@ -23,20 +23,12 @@ function ProposalCard(props: ProposalCardProps) {
 
   const org = props.state.Orgs[props.orgAddress]
   if (!org) {
-    return (
-      <div>
-        Loading...
-      </div>
-    );
+    return (<Loader color="pink" type="dots" />)
   }
 
   const proposal = org.Proposals[props.index]
   if (!proposal) {
-    return (
-      <div>
-        Loading...
-      </div>
-    );
+    return (<Loader color="pink" type="dots" />)
   }
 
   console.log(proposal)
@@ -94,10 +86,20 @@ function ProposalCard(props: ProposalCardProps) {
         <Accordion transitionDuration={0}>
           <Stack gap="xs">
             <Title order={2}> Participation </Title>
-            <Text> hasVoted {String(userInfo.hasVoted)} </Text>
-            <Text> power {userInfo.power.toString()} </Text>
-            <Text> total voters {userInfo.totalVoters} </Text>
-            <Text> average power {userInfo.averagePower.toString()} </Text>
+
+            <Group>
+              <Text size="lg" fw={600}> Your Voting Power </Text>
+              <Text size="lg" style={underline}> {userInfo.power.toString()} </Text>
+            </Group>
+
+
+            <Group>
+              <Text size="lg" fw={600}> Total Voting Power Cast </Text>
+              <Text size="lg" style={underline}> {userInfo.totalPower} </Text>
+              {userInfo.totalVoters != 0 &&
+                <Text fs="italic" fw={200}> (avg. {userInfo.averagePower} per vote) </Text>
+              }
+            </Group>
           </Stack>
         </Accordion>
 
@@ -110,35 +112,5 @@ function ProposalCard(props: ProposalCardProps) {
     </Paper >
   );
 }
-
-/*
-
-
-      {!proposal.Open && <RankedVoteModal issueOrgAddress={props.orgAddress} issueIndex={props.index} issueTitle={proposal.Title} issueDescription={proposal.Description} issueBallot={proposal.Ballot} />}
-
-          <Text fs={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
-
-      <Group>
-        <Title order={3}> Voting Strategy </Title>
-        <Text fw={600} fs={"xl"} style={{ "text-decoration-color": "pink", "text-decoration-line": "underline", "text-decoration-thickness": "3px" }}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
-      </Group>
-
-      <Group>
-        <Group justify="space-between" mt="md" mb="xs">
-          <Text fw={700}>{proposal.Title}</Text>
-          <Badge color="pink">{tallingSystemList[proposal.TallyingSystem].label}</Badge>
-        </Group>
-      </Group>
-
-
-      <Text size="sm" c="dimmed">
-        {proposal.Description}
-      </Text>
-
-      <Group gap="sm">
-        <TokenWeights weights={new Map(Object.entries(proposal.Erc20Weights))} cat='Weight' />
-        <TokenWeights weights={new Map(Object.entries(proposal.Erc721Multipliers))} cat='Multiplier' />
-      </Group>
-*/
 
 export default ProposalCard

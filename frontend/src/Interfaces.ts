@@ -87,6 +87,7 @@ export interface MeebuState {
 export interface UserProposalStatus {
   hasVoted: boolean;
   power: BigNumber;
+  totalPower: string;
   totalVoters: number;
   averagePower: string;
 }
@@ -146,6 +147,7 @@ export function newUserProposalStatus(
   return {
     hasVoted: proposal.HasVoted[user || ""] || false,
     power: powers[user || ""] || BigNumber.from(0),
+    totalPower: totalPower.toString(),
     totalVoters,
     averagePower,
   }
