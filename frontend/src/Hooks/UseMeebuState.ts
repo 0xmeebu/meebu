@@ -10,7 +10,7 @@ export const UseMeebuState = () => {
   const [error, setError] = useState<any | null>(null);
 
   useEffect(() => {
-    async function fetchState() {
+    const fetchState = setInterval(async () => {
       setUpdating(true);
 
       const request = {
@@ -40,9 +40,10 @@ export const UseMeebuState = () => {
       setUpdating(false);
       setState(state);
       setError(null);
-    };
+    }, 5000)
 
-    fetchState();
+
+    return () => clearInterval(fetchState); // Cleanup on component unmount
   }, []);
 
   return { state, updating, error };
