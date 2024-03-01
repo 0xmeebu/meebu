@@ -10,7 +10,7 @@ interface DaoDividerProps {
 
 function DaoDivider(props: DaoDividerProps) {
   return (
-    <Divider my="lg" size='sm' color='pink' label={<> <img src={props.imageURL} /> <Space w="xs" />  <Text c='pink' size='lg' fw={700}>{props.name}</Text>  <Space w="sm" /> <Anchor href={`https://etherscan.io/address/${props.label}`} style={{ color: 'grey' }}> at: {props.label} </Anchor> </>} labelPosition="left" />
+    <Divider my="lg" size='sm' color='pink' label={<> <img src={props.imageURL} /> <Space w="xs" />  <Text c='pink' size='xl' fw={700}>{props.name}</Text>  <Space w="sm" /> </>} labelPosition="left" />
 
 
   );
