@@ -23,7 +23,7 @@ const web3Onboard = init({
   chains,
   appMetadata: {
     name: "Meebu",
-    icon: "<svg><svg/>",
+    icon: "favicon.ico",
     description: "Governance layer",
     recommendedInjectedWallets: [
       { name: "MetaMask", url: "https://metamask.io" },

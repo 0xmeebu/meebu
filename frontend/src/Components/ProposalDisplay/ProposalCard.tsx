@@ -1,8 +1,7 @@
-import { Text, Stack, Title, List, Avatar, Divider, Paper, Accordion, Box } from '@mantine/core';
+import { Text, Stack, Title, List, Paper, Accordion, Box, Badge } from '@mantine/core';
 import RankedVoteModal from '../RankedVoteModal';
-import { MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
+import { addInfo, MeebuState, newUserProposalStatus, TokenInfo, TokenWeight } from '../../Interfaces';
 import tallingSystemList from '../../Data/tallyingSystemList';
-import tokens from "../../Data/tokenList";
 import { useRollups } from '../../useRollups';
 import DisplayWallet from '../DisplayWallet';
 
@@ -17,30 +16,6 @@ const underline = {
   textDecorationLine: "underline",
   textDecorationThickness: "3px",
   textUnderlineOffset: "4px"
-}
-
-function addInfo(t: Map<string, TokenWeight>): Map<string, TokenInfo> {
-  let ret = new Map<string, TokenInfo>
-
-  t.forEach((v, k, _m) => {
-    ret.set(k, {
-      address: k,
-      weight: v.Weight,
-      timeWeighted: v.TimeWeighted,
-      label: null,
-      uri: null,
-    })
-  })
-
-  tokens.forEach(tl => {
-    let t = ret.get(tl.value)
-    if (t) {
-      t.label = tl.label
-      t.uri = tl.uri
-    }
-  })
-
-  return ret
 }
 
 function ProposalCard(props: ProposalCardProps) {
@@ -64,12 +39,12 @@ function ProposalCard(props: ProposalCardProps) {
     );
   }
 
-  let erc20Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([x, y]) => {
+  let erc20Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([_x, y]) => {
     return (
       y
     )
   })
-  let erc721Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([x, y]) => {
+  let erc721Weights = [...addInfo(new Map(Object.entries(proposal.Erc721Multipliers))).entries()].map(([_x, y]) => {
     return (
       y
     )
@@ -96,9 +71,9 @@ function ProposalCard(props: ProposalCardProps) {
 
         <Stack gap="xs">
           <Title order={2}> Governance Framework </Title>
-          <Text fs={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
-          <DisplayWallet Erc20Weights={erc20Weights} unitLabel='Weight'/>
-          <DisplayWallet Erc20Weights={erc721Weights} unitLabel='Bonus' suffix='%'/>
+          <Badge color="pink">{tallingSystemList[proposal.TallyingSystem].label}</Badge>
+          <DisplayWallet Erc20Weights={erc20Weights} unitLabel='Weight' />
+          <DisplayWallet Erc20Weights={erc721Weights} unitLabel='Bonus' suffix='%' />
         </Stack>
 
 
@@ -133,6 +108,7 @@ function ProposalCard(props: ProposalCardProps) {
 
 
 
+          <Text fs={"xl"} style={underline}> {tallingSystemList[proposal.TallyingSystem].label} </Text>
 
       <Group>
         <Title order={3}> Voting Strategy </Title>
