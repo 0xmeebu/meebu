@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meebu</title>
+    <link rel="icon" type="image/x-icon" href="./public/favicon.ico">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            position: relative; /* Ensure relative positioning for absolute positioning of images */
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center; /* Center header content horizontally */
+            flex-direction: column; /* Adjusted to stack items vertically */
+            align-items: center; /* Center items horizontally */
+            position: relative; /* Added position relative */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            position: absolute;
+        }
+
+        .logo-left {
+            left: calc(50% - 350px); /* Adjusted left position */
+        }
+
+        .logo-right {
+            right: calc(50% - 350px); /* Adjusted right position */
+        }
+
+	.logo-placeholder {
+    		max-width: 100%; /* Allows the image to be responsive and grow up to 100% of its container size */
+    		width: 150px; /* Sets the logo width to 100 pixels */
+    		margin: 0 10px;
+	}
+
+
+        .governance-sentence {
+            font-weight: bold;
+            color: #555;
+            font-size: 20px;
+            margin-top: 5px; /* Adjusted margin for spacing */
+            margin-bottom: 25px; /* Reduced margin beneath "Meebu" */
+        }
+
+        section {
+            padding: 40px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+
+button {
+    background-color: #FF00FF;
+    color: #FFFFFF;
+    padding: 10px 15px; /* Adjust padding as needed */
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s ease-in-out;
+    display: inline-block; /* Makes sure the button respects width and height */
+    min-width: 150px; /* Ensures a minimum width */
+    min-height: 50px; /* Ensures a minimum height */
+    text-align: center; /* Center the text */
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+}
+
+button:hover {
+    background-color: #D600D6;
+}
+
+        .wrapper {
+            background-color: #FF00FF;
+            font-family: 'Raleway', sans-serif;
+            margin-top: 50px; /* Keep the top margin the same */
+            margin-bottom: -20px; /* Reduce the bottom margin by an additional 50% */
+            margin-left: auto; /* Center horizontally */
+            margin-right: auto; /* Center horizontally */
+            padding: 40px 40px;
+            position: relative;
+            width: 45%;
+        }
+
+        h1 {
+            color: #FF00FF;
+            font-size: 44px;
+            margin-top: 40px;
+            text-align: center;
+            margin-bottom: 20px; /* Reduced margin beneath "Meebu" */
+        }
+
+        .sentence {
+            color: #222;
+            font-size: 30px;
+            text-align: left;
+        }
+
+        .slidingVertical {
+            display: inline;
+            text-indent: 8px;
+        }
+
+        .slidingVertical span {
+            animation: topToBottom 12.5s linear infinite 0s;
+            -ms-animation: topToBottom 12.5s linear infinite 0s;
+            -webkit-animation: topToBottom 12.5s linear infinite 0s;
+            color: #f5f5f5;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        .slidingVertical span:nth-child(2) {
+            animation-delay: 2.5s;
+            -ms-animation-delay: 2.5s;
+            -webkit-animation-delay: 2.5s;
+        }
+
+        .slidingVertical span:nth-child(3) {
+            animation-delay: 5s;
+            -ms-animation-delay: 5s;
+            -webkit-animation-delay: 5s;
+        }
+
+        .slidingVertical span:nth-child(4) {
+            animation-delay: 7.5s;
+            -ms-animation-delay: 7.5s;
+            -webkit-animation-delay: 7.5s;
+        }
+
+        .slidingVertical span:nth-child(5) {
+            animation-delay: 10s;
+            -ms-animation-delay: 10s;
+            -webkit-animation-delay: 10s;
+        }
+
+        @-moz-keyframes topToBottom {
+            0% {
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0;
+                -moz-transform: translateY(-50px);
+            }
+
+            10% {
+                opacity: 1;
+                -moz-transform: translateY(0px);
+            }
+
+            25% {
+                opacity: 1;
+                -moz-transform: translateY(0px);
+            }
+
+            30% {
+                opacity: 0;
+                -moz-transform: translateY(50px);
+            }
+
+            80% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes topToBottom {
+            0% {
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0;
+                -webkit-transform: translateY(-50px);
+            }
+
+            10% {
+                opacity: 1;
+                -webkit-transform: translateY(0px);
+            }
+
+            25% {
+                opacity: 1;
+                -webkit-transform: translateY(0px);
+            }
+
+            30% {
+                opacity: 0;
+                -webkit-transform: translateY(50px);
+            }
+
+            80% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-ms-keyframes topToBottom {
+            0% {
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0;
+                -ms-transform: translateY(-50px);
+            }
+
+            10% {
+                opacity: 1;
+                -ms-transform: translateY(0px);
+            }
+
+            25% {
+                opacity: 1;
+                -ms-transform: translateY(0px);
+            }
+
+            30% {
+                opacity: 0;
+                -ms-transform: translateY(50px);
+            }
+
+            80% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Position the left and right images */
+        img.left-placeholder {
+            margin-top: 25px;
+	    position: absolute;
+            left: 0;
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust vertically */
+            width: 20%; /* Adjust width as needed */
+            object-fit: cover; /* Ensure the image covers the space */
+        }
+
+        img.right-placeholder {
+            margin-top: 25px;
+	    position: absolute;
+            right: 0;
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust vertically */
+            width: 20%; /* Adjust width as needed */
+            object-fit: cover; /* Ensure the image covers the space */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <!-- Container for the logos on the left side -->
+        <div class="logo-container logo-left"> <!-- Added logo-left class -->
+            <img class="logo-placeholder" src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYT6xNEOCa9XV7gldz5WMksYrr5G4PDpug32YCfaA7t67x-nsfK4Z8u1UQUrtp7Y9cF0lZoJIDPPPOFhcMBQekQ4yid3eA=s1600" alt="Logo 1">
+        </div>
+
+        <h1>Meebu</h1>
+        <div class="governance-sentence">The Governance Layer of the Internet</div> <!-- Added governance sentence -->
+
+        <!-- Container for the logos on the right side -->
+        <div class="logo-container logo-right"> <!-- Added logo-right class -->
+            <img class="logo-placeholder" src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRIPquDLwcZm84NZYlpDjSktygnZOtWR2TVbl2hR_3zR-7RiPtKNdiVklqNbLE9454H28IwuUVI7U4xIXetiJ-1NM9dgw=s1600" alt="Logo 2">
+        </div>
+
+    </header>
+
+<p><b>An expressive no-code governance platform for digital communities.</b></p>
+
+    <div class="wrapper">
+        <h1 class="sentence"><span>Digital communities should</span>
+            <div class="slidingVertical">
+                <span>define</span>
+                <span>own</span>
+                <span>coordinate</span>
+                <span>govern</span>
+                <span>express</span>
+            </div>
+            </br>
+            <span>themselves.</span>
+        </h1>
+    </div>
+
+    <img src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRHNICfGL1sgIrON-zt-WPXXpl9JMyfsn3A-du0x2WEXtQf2GIBVP5YuNDgngxcMiKXEtJbTFomqIZ2CfGmGma1m5JlkA=s1600" alt="Left Image Placeholder" class="left-placeholder"> <!-- Left image placeholder -->
+
+
+    <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihZyDt1Hsnl0i3CSonCo4KlTdh9RrdMtr_m2-bYYmKtXTvMuktSGVMLAOY1PJ7rvIK--BjZhgFaYl3BxS3Ku5EG-X87w=s2560" alt="Right Image Placeholder" class="right-placeholder"> <!-- Right image placeholder -->
+
+    <section>
+        <button onclick="location.href='http://localhost:3000/'">Launch App</button>
+    </section>
+
+</body>
+
+</html>
+
+
+
