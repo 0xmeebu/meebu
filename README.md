@@ -1,6 +1,6 @@
-# meebu
+# Meebu
 
-## How to the demo Meebu:
+## Running the demo:
 
 Disclaimer: this is for testing purposes, avoid using your real private key or running
 this on mainnet
@@ -28,8 +28,9 @@ sunodo run
 
 ```
 Step 1:
+In another terminal window:
 ```
-cd ../frontend/
+cd frontend/
 yarn
 cp webpack.config.js node_modules/react-scripts/config/
 yarn codegen && yarn start
