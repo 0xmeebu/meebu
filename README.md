@@ -13,6 +13,9 @@ nonodo or sunodo:
 https://github.com/gligneul/nonodo
 https://github.com/sunodo/sunodo
 
+foundry:
+https://github.com/foundry-rs/foundry
+
 ### Step by Step:
 Step 0:
 Start Nonodo/sunodo:
