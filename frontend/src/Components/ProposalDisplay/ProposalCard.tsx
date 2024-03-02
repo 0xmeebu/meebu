@@ -31,8 +31,6 @@ function ProposalCard(props: ProposalCardProps) {
     return (<Loader color="pink" type="dots" />)
   }
 
-  console.log(proposal)
-
   let erc20Weights = [...addInfo(new Map(Object.entries(proposal.Erc20Weights))).entries()].map(([_x, y]) => {
     return (
       y

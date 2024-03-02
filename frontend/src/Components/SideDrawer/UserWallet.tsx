@@ -16,8 +16,6 @@ function UserWallet() {
   }
 
   const user = state.Voters[rollups.userAddress]
-  console.log("WWW1", user)
-
 
   let erc20Wallet = [...addInfo2(new Map(Object.entries(user.Erc20Balances))).entries()].map(([_x, y]) => {
     return (
@@ -25,15 +23,11 @@ function UserWallet() {
     )
   })
 
-  console.log("ERC20", erc20Wallet)
-
   let erc721Wallet = [...addInfo3(new Map(Object.entries(user.Erc721Owned))).entries()].map(([_x, y]) => {
     return (
       y
     )
   })
-  console.log("ERC721", erc721Wallet)
-
 
   return (
     <>
