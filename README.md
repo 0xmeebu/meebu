@@ -1,10 +1,19 @@
-# meebu
+# Meebu
 
-## How to deploy/interact with the DAOFactory:
+## Running the demo:
 
 Disclaimer: this is for testing purposes, avoid using your real private key or running
 this on mainnet
 
+### Requirements:
+yarn:
+https://yarnpkg.com/getting-started/install
+
+nonodo or sunodo:
+https://github.com/gligneul/nonodo
+https://github.com/sunodo/sunodo
+
+### Step by Step:
 Step 0:
 Start Nonodo/sunodo:
 ```
@@ -19,47 +28,18 @@ sunodo run
 
 ```
 Step 1:
-There is a deployment script on baselayer/script/.
-Run:
-
+In another terminal window:
 ```
-cd baselayer
-forge script script/DeployScript.s.sol --broadcast --rpc-url http://localhost:8545 --private-key $PRIVATE-KEY
-```
-
-If you're using Anvil, you can use it's last generated account for testing:
-```
-forge script script/DeployScript.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
+cd frontend/
+yarn
+cp webpack.config.js node_modules/react-scripts/config/
+yarn codegen && yarn start
 ```
 
 Step 2:
-With the DAOFactory deployed, set meebu address:
+Run the script the setup the demo:
 
 ```
-cast send $DAO-FACTORY-ADDRESS "setMeebuAddress(address)" $MEEBU-ADDRESS --rpc-url http://localhost:8545 --private-key $PRIVATE-KEY
+cd baselayer/script/
+./setup_meebu_demo.sh
 ```
-Or, using the Anvil hardcoded addresses and the nonodo/sunodo default addresses for accounts and dapps:
-
-```
-cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 "setMeebuAddress(address)" 0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C --rpc-url http://localhost:8545 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
-```
-
-Step 3:
-To create a DAO, create the data for the function call:
-cast calldata "createDAO(address)" $OWNER-ADDRESS
-
-Using Anvil's first account:
-```
-cast calldata "createDAO(address)" "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-```
-Send the transcation:
-```
-cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 $ENCODED_FROM_PREVIOUS_STEP --rpc-url http://localhost:8545 --private-key <private-key>
-```
-Example:
-```
-cast send 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35 0x131773d6000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266 --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-```
-
-You should now see and input arrive at nonodo/sunodo.
-
