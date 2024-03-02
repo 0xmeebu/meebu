@@ -13,6 +13,9 @@ nonodo or sunodo:
 https://github.com/gligneul/nonodo
 https://github.com/sunodo/sunodo
 
+foundry:
+https://github.com/foundry-rs/foundry
+
 ### Step by Step:
 Step 0:
 Start Nonodo/sunodo:
@@ -30,13 +33,19 @@ sunodo run
 Step 1:
 In another terminal window:
 ```
-cd frontend/
+cd baselayer/
+forge install
+```
+
+Step 2:
+```
+cd ../frontend/
 yarn
 cp webpack.config.js node_modules/react-scripts/config/
 yarn codegen && yarn start
 ```
 
-Step 2:
+Step 3:
 Run the script the setup the demo:
 
 ```
