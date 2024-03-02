@@ -39,9 +39,7 @@ function ProposalCard(props: ProposalCardProps) {
     )
   })
   let erc721Weights = [...addInfo(new Map(Object.entries(proposal.Erc721Multipliers))).entries()].map(([_x, y]) => {
-    return (
-      y
-    )
+    return { ...y, weight: y.weight - 100 }
   })
   let ballot = proposal.Ballot.map((v, k) => {
     return (
